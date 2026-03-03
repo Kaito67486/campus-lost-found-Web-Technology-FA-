@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campus Lost & Found</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo">LF</div>
+      <div class="brand-text">
+        <div class="brand-title">Campus Lost & Found</div>
+        <div class="brand-subtitle">Welcome</div>
+      </div>
+    </div>
+      <div class="topbar-right">
+    <a class="btn btn-ghost" href="about.html">About Us</a>
+    <a class="btn btn-ghost" href="contact.html">Contact Us</a>
+  </div>
+  </header>
+
+  <!-- CENTER CONTENT -->
+  <main class="auth">
+    <section class="auth-card" style="text-align:center;">
+      
+      <h1 class="auth-title">
+        Welcome to the Lost & Found System
+      </h1>
+
+      <p class="muted" style="margin-top:12px;">
+        Report lost items, submit found items, and track their status securely.
+      </p>
+
+      <!-- NOT LOGGED IN -->
+      <div id="guestActions" style="margin-top:28px;">
+        <a href="login.html"
+           class="btn btn-primary"
+           style="width:100%; margin-bottom:12px;">
+          Login
+        </a>
+
+        <a href="register.html"
+           class="btn btn-ghost"
+           style="width:100%;">
+          Register
+        </a>
+      </div>
+
+      <!-- LOGGED IN -->
+      <div id="userActions" style="margin-top:28px; display:none;">
+        <a href="home.html"
+           class="btn btn-primary"
+           style="width:100%; margin-bottom:12px;">
+          Go to Dashboard
+        </a>
+
+        <button id="btnLogout"
+                class="btn btn-danger"
+                style="width:100%;">
+          Logout
+        </button>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    © <span id="year"></span> Campus Lost & Found
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

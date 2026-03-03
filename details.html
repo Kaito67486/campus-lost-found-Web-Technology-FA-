@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Item Details | Campus Lost &amp; Found</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo">LF</div>
+      <div class="brand-text">
+        <div class="brand-title">Campus Lost &amp; Found</div>
+        <div class="brand-subtitle">Item Details</div>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <span class="user-pill" id="welcomeText">Welcome 👋</span>
+      <button class="btn btn-ghost" id="btnLogout" type="button">Logout</button>
+    </div>
+  </header>
+
+  <!-- APP GRID: SIDEBAR + MAIN -->
+  <div class="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <nav class="side-nav">
+
+        <a class="side-link" href="home.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-6v-6H10v6H4a1 1 0 0 1-1-1V10z"/>
+            </svg>
+          </span>
+          Dashboard
+        </a>
+
+        <a class="side-link" href="report.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+              <path d="M14 2v6h6"/>
+            </svg>
+          </span>
+          Report Lost Item
+        </a>
+
+        <a class="side-link" href="found.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="7"/>
+              <path d="M21 21l-4.3-4.3"/>
+            </svg>
+          </span>
+          Found Items
+        </a>
+
+        <a class="side-link" href="lost.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="2" y="7" width="20" height="14" rx="2"/>
+              <path d="M8 7V5a4 4 0 0 1 8 0v2"/>
+            </svg>
+          </span>
+          Lost Items
+        </a>
+
+        <a class="side-link" href="maps.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 22s7-4.4 7-12a7 7 0 1 0-14 0c0 7.6 7 12 7 12zm0-10a2 2 0 1 0 0-4a2 2 0 0 0 0 4z"/>
+            </svg>
+          </span>
+          Map Overview
+        </a>
+
+        <a class="side-link" href="myreports.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-4 0-8 2-8 6h16c0-4-4-6-8-6z"/>
+            </svg>
+          </span>
+          My Reports
+        </a>
+
+        <a class="side-link" href="settings.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 8a4 4 0 1 0 4 4 4 4 0 0 0-4-4zm9 4l-2.1-.7.4-2.3-2-2-2.3.4L12 3 8.9 6.4l-2.3-.4-2 2 .4 2.3L3 12l2.1.7-.4 2.3 2 2 2.3-.4L12 21l3.1-3.4 2.3.4 2-2-.4-2.3z"/>
+            </svg>
+          </span>
+          Settings
+        </a>
+
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <div class="page-head">
+        <div>
+          <h1 class="page-title">Item Details</h1>
+          <p class="muted">View full details. Owners can edit, change status, or delete.</p>
+        </div>
+      </div>
+
+      <!-- Details Card -->
+      <section class="card" id="detailCard" style="padding:18px;">
+        <div id="loading" class="muted">Loading item...</div>
+
+        <div id="errorState" class="empty" style="display:none;">
+          <h3 style="margin-bottom:8px;">Item not found</h3>
+          <p class="muted">The item may have been deleted or the link is invalid.</p>
+        </div>
+
+        <div id="detailContent" style="display:none;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+              <span class="badge" id="refCode"></span>
+              <span class="status" id="itemStatus"></span>
+            </div>
+            <div class="muted small" id="itemMetaTop"></div>
+          </div>
+
+          <h2 id="itemTitle" style="margin:6px 0 10px;"></h2>
+
+          <img
+            id="itemPhoto"
+            alt="Item photo"
+            style="display:none; width:100%; max-width:720px; border-radius:14px; margin:10px 0 14px; object-fit:cover;"
+          />
+
+          <div style="display:grid; grid-template-columns: 1fr; gap:10px; max-width:720px;">
+            <div>
+              <div class="muted small" style="margin-bottom:4px;">Description</div>
+              <div id="itemDescription"></div>
+            </div>
+
+            <div>
+              <div class="muted small" style="margin-bottom:4px;">Contact</div>
+              <div><strong id="itemContact"></strong></div>
+            </div>
+          </div>
+
+          <!-- OWNER ACTIONS -->
+          <div id="ownerActions" style="display:none; margin-top:16px;">
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <a id="btnEdit" class="btn btn-primary" href="#">Edit</a>
+              <button id="btnToggleStatus" class="btn btn-ghost" type="button">Change Status</button>
+              <button id="btnDelete" class="btn btn-danger" type="button">Delete</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">© <span id="year"></span> Campus Lost &amp; Found</footer>
+    </main>
+  </div>
+
+  <script src="details.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

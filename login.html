@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login • Campus Lost & Found</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo">LF</div>
+      <div class="brand-text">
+        <div class="brand-title">Campus Lost & Found</div>
+        <div class="brand-subtitle">Login</div>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <a class="btn btn-ghost" href="index.html">Home</a>
+      <a class="btn btn-ghost" href="about.html">About Us</a>
+      <a class="btn btn-ghost" href="contact.html">Contact Us</a>
+    </div>
+  </header>
+
+  <!-- CENTERED CARD -->
+  <main class="auth">
+    <section class="auth-card">
+      <h1 class="auth-title">Sign in</h1>
+      <p class="muted">Enter your email and password to continue.</p>
+
+      <div id="toast" class="toast" style="display:none;"></div>
+
+      <form id="loginForm" class="form" novalidate>
+        <div class="control">
+          <label for="email">Email</label>
+          <input id="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+        </div>
+
+        <div class="control">
+          <label for="password">Password</label>
+          <input id="password" type="password" autocomplete="current-password" placeholder="••••••••" required />
+        </div>
+
+        <div class="form-actions" style="margin-top:6px;">
+          <button class="btn btn-primary" type="submit" id="btnLogin">Login</button>
+          <a class="btn btn-ghost" href="register.html">Create account</a>
+        </div>
+
+        <p class="muted" style="margin-top:12px;">
+          Don’t have an account? <a href="register.html">Register here</a>.
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> Campus Lost & Found</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>

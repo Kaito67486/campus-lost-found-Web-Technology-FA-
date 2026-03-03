@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home • Campus Lost & Found</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo">LF</div>
+      <div class="brand-text">
+        <div class="brand-title">Campus Lost & Found</div>
+        <div class="brand-subtitle">Find your lost items</div>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <span class="user-pill" id="welcomeText">Welcome 👋</span>
+      <button class="btn btn-ghost" id="btnLogout" type="button">Logout</button>
+    </div>
+  </header>
+
+  <!-- APP LAYOUT -->
+  <div class="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+  <nav class="side-nav">
+
+    <a class="side-link " href="home.html">
+      <span class="icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-6v-6H10v6H4a1 1 0 0 1-1-1V10z"/>
+        </svg>
+      </span>
+      Dashboard
+    </a>
+
+    <!-- Report Lost Item: FILE ICON -->
+    <a class="side-link" href="report.html">
+      <span class="icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+          <path d="M14 2v6h6"/>
+        </svg>
+      </span>
+      Report Lost Item
+    </a>
+
+    <!-- Found Items: MAGNIFYING GLASS -->
+    <a class="side-link" href="found.html">
+      <span class="icon">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="7"/>
+          <path d="M21 21l-4.3-4.3"/>
+        </svg>
+      </span>
+      Found Items
+    </a>
+
+    <!-- Lost Items: BRIEFCASE/BAG ICON -->
+    <a class="side-link" href="lost.html">
+      <span class="icon">
+        <svg viewBox="0 0 24 24">
+          <rect x="2" y="7" width="20" height="14" rx="2"/>
+          <path d="M8 7V5a4 4 0 0 1 8 0v2"/>
+        </svg>
+      </span>
+      Lost Items
+    </a>
+
+    <a class="side-link" href="maps.html">
+      <span class="icon">
+        <!-- map pin icon -->
+        <svg viewBox="0 0 24 24">
+          <path d="M12 22s7-4.4 7-12a7 7 0 1 0-14 0c0 7.6 7 12 7 12zm0-10a2 2 0 1 0 0-4a2 2 0 0 0 0 4z"/>
+        </svg>
+      </span>
+      Map Overview
+    </a>
+
+    <a class="side-link" href="myreports.html">
+      <span class="icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-4 0-8 2-8 6h16c0-4-4-6-8-6z"/>
+        </svg>
+      </span>
+      My Reports
+    </a>
+
+    <a class="side-link" href="settings.html">
+      <span class="icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 8a4 4 0 1 0 4 4 4 4 0 0 0-4-4zm9 4l-2.1-.7.4-2.3-2-2-2.3.4L12 3 8.9 6.4l-2.3-.4-2 2 .4 2.3L3 12l2.1.7-.4 2.3 2 2 2.3-.4L12 21l3.1-3.4 2.3.4 2-2-.4-2.3z"/>
+        </svg>
+      </span>
+      Settings
+    </a>
+
+  </nav>
+</aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+      <!-- HERO SEARCH -->
+      <section class="hero">
+        <h1>Find Your Lost Items</h1>
+        <p class="muted">
+          Search by keyword, location, or upload an image to match items across campus.
+        </p>
+
+        <div class="search-card">
+          <div class="search-row">
+            <input id="q" type="text" placeholder="Search (e.g., wallet, library, black bag)..." />
+            <button class="btn btn-primary" id="btnSearch" type="button">Search</button>
+          </div>
+
+          <div class="search-actions">
+            <button class="btn btn-ghost" id="btnClear" type="button">Clear</button>
+          </div>
+
+          <p class="help">
+            Tip: Try “library 2nd floor”, “blue jacket”, or “charger”.
+          </p>
+        </div>
+      </section>
+
+      <!-- QUICK STATS -->
+      <section class="stats">
+        <div class="stat-box">
+          <div class="stat-label">Total Reports</div>
+          <div class="stat-value" id="statTotal">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Lost Items</div>
+          <div class="stat-value" id="statLost">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Found Items</div>
+          <div class="stat-value" id="statFound">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Active</div>
+          <div class="stat-value" id="statActive">0</div>
+        </div>
+      </section>
+
+      <!-- RECENT ITEMS -->
+      <section class="section-head">
+        <h2>Recent Items</h2>
+        <div class="muted small" id="itemsCount">Showing 0 items</div>
+      </section>
+
+      <section id="itemsGrid" class="grid"></section>
+      <div id="emptyState" class="empty" style="display:none;">
+        No items found.
+      </div>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        © <span id="year"></span> Campus Lost & Found
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- Your global script if you have one -->
+  <script src="script.js"></script>
+  <script src="home.js"></script>
+</body>
+</html>

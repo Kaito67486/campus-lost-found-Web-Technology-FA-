@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Report Item | Campus Lost &amp; Found</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo">LF</div>
+      <div class="brand-text">
+        <div class="brand-title">Campus Lost &amp; Found</div>
+        <div class="brand-subtitle">Submit / Edit Report</div>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <span class="user-pill" id="welcomeText">Welcome 👋</span>
+      <button class="btn btn-ghost" id="btnLogout" type="button">Logout</button>
+    </div>
+  </header>
+
+  <!-- APP -->
+  <div class="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <nav class="side-nav">
+
+        <a class="side-link" href="home.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-6v-6H10v6H4a1 1 0 0 1-1-1V10z"/>
+            </svg>
+          </span>
+          Dashboard
+        </a>
+
+        <a class="side-link active" href="report.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+              <path d="M14 2v6h6"/>
+            </svg>
+          </span>
+          Report Lost Item
+        </a>
+
+        <a class="side-link" href="found.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="7"/>
+              <path d="M21 21l-4.3-4.3"/>
+            </svg>
+          </span>
+          Found Items
+        </a>
+
+        <a class="side-link" href="lost.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="2" y="7" width="20" height="14" rx="2"/>
+              <path d="M8 7V5a4 4 0 0 1 8 0v2"/>
+            </svg>
+          </span>
+          Lost Items
+        </a>
+
+        <a class="side-link" href="maps.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 22s7-4.4 7-12a7 7 0 1 0-14 0c0 7.6 7 12 7 12zm0-10a2 2 0 1 0 0-4a2 2 0 0 0 0 4z"/>
+            </svg>
+          </span>
+          Map Overview
+        </a>
+
+        <a class="side-link" href="myreports.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-4 0-8 2-8 6h16c0-4-4-6-8-6z"/>
+            </svg>
+          </span>
+          My Reports
+        </a>
+
+        <a class="side-link" href="settings.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 8a4 4 0 1 0 4 4 4 4 0 0 0-4-4zm9 4l-2.1-.7.4-2.3-2-2-2.3.4L12 3 8.9 6.4l-2.3-.4-2 2 .4 2.3L3 12l2.1.7-.4 2.3 2 2 2.3-.4L12 21l3.1-3.4 2.3.4 2-2-.4-2.3z"/>
+            </svg>
+          </span>
+          Settings
+        </a>
+
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <section class="page-title">
+        <h1 id="formTitle">Report Lost Item</h1>
+        <p class="muted" id="modeHint">Create mode</p>
+      </section>
+
+      <form id="reportForm" novalidate>
+
+        <!-- BASIC INFO -->
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Basic Information</h2>
+          </div>
+
+          <div class="panel-body">
+
+            <div class="field-grid-2">
+              <div class="field">
+                <label for="title">Item Name <span class="req">*</span></label>
+                <input id="title" name="title" type="text" maxlength="60"
+                       placeholder="e.g. iPhone 14 Pro, Blue Backpack" required />
+              </div>
+
+              <div class="field">
+                <label for="category">Category <span class="req">*</span></label>
+                <select id="category" name="category" required>
+                  <option value="">Select category</option>
+                  <option value="Lost">Lost</option>
+                  <option value="Found">Found</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="description">Description <span class="req">*</span></label>
+              <textarea id="description" name="description" rows="6" maxlength="500"
+                placeholder="Describe the item in detail - color, brand, distinctive features, etc." required></textarea>
+            </div>
+
+            <div class="field-grid-2">
+              <div class="field">
+                <label for="location">Location <span class="req">*</span></label>
+                <select id="location" name="location" required>
+                  <option value="">Select location</option>
+
+                  <optgroup label="TTS Building">
+                    <option value="TTS Ground Floor (GF)">TTS Ground Floor (GF)</option>
+                    <option value="TTS Level 3 (L3)">TTS Level 3 (L3)</option>
+                    <option value="TTS Level 4 (L4)">TTS Level 4 (L4)</option>
+                  </optgroup>
+
+                  <optgroup label="Library">
+                    <option value="Library Level 1">Library Level 1</option>
+                    <option value="Library Level 2">Library Level 2</option>
+                    <option value="Library Level 3">Library Level 3</option>
+                  </optgroup>
+
+                  <optgroup label="Campus Facilities">
+                    <option value="Cafeteria">Cafeteria</option>
+                    <option value="Student Center">Student Center</option>
+                    <option value="Auditorium">Auditorium</option>
+                  </optgroup>
+
+                  <optgroup label="Other">
+                    <option value="Parking Lot">Parking Lot</option>
+                    <option value="Sports Complex">Sports Complex</option>
+                    <option value="Walkway / Corridor">Walkway / Corridor</option>
+                  </optgroup>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="date">Date <span class="req">*</span></label>
+                <input id="date" name="date" type="date" required />
+              </div>
+            </div>
+
+            <div class="field-grid-2">
+              <div class="field">
+                <label for="contact">Contact Info <span class="req">*</span></label>
+                <input id="contact" name="contact" type="text" maxlength="120"
+                       placeholder="e.g. email or phone number" required />
+              </div>
+
+              <div class="field">
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                  <option value="Active">Active</option>
+                  <option value="Claimed">Claimed</option>
+                  <option value="Resolved">Resolved</option>
+                </select>
+              </div>
+            </div>
+
+            <label class="checkbox" style="margin-top:10px;">
+              <input id="confirm" name="confirm" type="checkbox" required />
+              <span>I confirm the information is accurate.</span>
+            </label>
+
+          </div>
+        </section>
+
+        <!-- PHOTO -->
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Item Photo (Optional)</h2>
+          </div>
+
+          <div class="panel-body">
+            <input id="photo" name="photo" type="file" accept="image/*" />
+
+            <img id="photoPreview" alt="Preview"
+                 style="display:none;max-width:280px;margin-top:12px;border-radius:12px;" />
+
+            <p class="muted" style="margin-top:10px;">
+              Tip: Upload a clear photo to increase the chance of matching.
+            </p>
+          </div>
+        </section>
+
+        <div class="form-actions" style="margin-top:14px;">
+          <button id="btnSubmit" type="submit" class="btn btn-primary">Submit</button>
+          <a href="home.html" class="btn btn-ghost">Cancel</a>
+        </div>
+
+      </form>
+
+      <footer class="footer">
+        © 2026 Campus Lost &amp; Found
+      </footer>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="report.js"></script>
+</body>
+</html>

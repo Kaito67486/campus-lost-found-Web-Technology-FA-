@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Map Overview | Campus Lost &amp; Found</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo">LF</div>
+      <div class="brand-text">
+        <div class="brand-title">Campus Lost &amp; Found</div>
+        <div class="brand-subtitle">Map Overview</div>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <span class="user-pill" id="welcomeText">Welcome 👋</span>
+      <button class="btn btn-ghost" id="btnLogout" type="button">Logout</button>
+    </div>
+  </header>
+
+  <!-- APP GRID: SIDEBAR + MAIN -->
+  <div class="app">
+    <!-- SIDEBAR (same structure as lost.html) -->
+    <aside class="sidebar">
+      <nav class="side-nav">
+
+        <a class="side-link" href="home.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-6v-6H10v6H4a1 1 0 0 1-1-1V10z"/>
+            </svg>
+          </span>
+          Dashboard
+        </a>
+
+        <a class="side-link" href="report.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+              <path d="M14 2v6h6"/>
+            </svg>
+          </span>
+          Report Lost Item
+        </a>
+
+        <a class="side-link" href="found.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="7"/>
+              <path d="M21 21l-4.3-4.3"/>
+            </svg>
+          </span>
+          Found Items
+        </a>
+
+        <a class="side-link" href="lost.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="2" y="7" width="20" height="14" rx="2"/>
+              <path d="M8 7V5a4 4 0 0 1 8 0v2"/>
+            </svg>
+          </span>
+          Lost Items
+        </a>
+
+        <!-- Map Overview (ACTIVE) -->
+        <a class="side-link active" href="maps.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 22s7-4.4 7-12a7 7 0 1 0-14 0c0 7.6 7 12 7 12zm0-10a2 2 0 1 0 0-4a2 2 0 0 0 0 4z"/>
+            </svg>
+          </span>
+          Map Overview
+        </a>
+
+        <a class="side-link" href="myreports.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-4 0-8 2-8 6h16c0-4-4-6-8-6z"/>
+            </svg>
+          </span>
+          My Reports
+        </a>
+
+        <a class="side-link" href="settings.html">
+          <span class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 8a4 4 0 1 0 4 4 4 4 0 0 0-4-4zm9 4l-2.1-.7.4-2.3-2-2-2.3.4L12 3 8.9 6.4l-2.3-.4-2 2 .4 2.3L3 12l2.1.7-.4 2.3 2 2 2.3-.4L12 21l3.1-3.4 2.3.4 2-2-.4-2.3z"/>
+            </svg>
+          </span>
+          Settings
+        </a>
+
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <div class="page-head">
+        <div>
+          <h1 class="page-title">Map Overview</h1>
+          <p class="muted">See hotspots by location. Click a place to filter items.</p>
+        </div>
+        <div class="muted" id="resultCount">0 places</div>
+      </div>
+
+      <!-- CONTENT GRID -->
+      <div class="map-layout">
+        <!-- Map card -->
+        <section class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Campus Map</div>
+              <div class="muted small">Embed your campus map here</div>
+            </div>
+          </div>
+
+          <!-- Floor buttons -->
+        <div class="floor-tabs" style="display:flex; gap:10px; margin:12px 0;">
+        <button class="btn btn-ghost floor-btn active" data-floor="gf" type="button">TTS Ground Floor</button>
+        <button class="btn btn-ghost floor-btn" data-floor="l3" type="button">TTS Level 3</button>
+        <button class="btn btn-ghost floor-btn" data-floor="l4" type="button">TTS Level 4</button>
+        </div>
+
+        <!-- Map image -->
+        <div class="map-frame" style="overflow:hidden;">
+        <img
+            id="floorMap"
+            class="floor-map"
+            src="images/tts-gf.png"
+            alt="TTS Building Map"
+        />
+        </div>
+        </section>
+
+        <!-- Locations card -->
+        <section class="card">
+          <div class="card-head" style="display:flex;justify-content:space-between;align-items:center;">
+            <div class="card-title">Locations</div>
+            <div class="muted small" id="locCount">0 places</div>
+          </div>
+
+          <div id="locationsList" class="locations-list"></div>
+
+          <div class="muted small" style="padding:12px 14px;">
+            Tip: Click a location to jump to Lost/Found list filtered by that place.
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        © 2026 Campus Lost &amp; Found
+      </footer>
+    </main>
+  </div>
+
+  <script src="maps.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
