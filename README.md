@@ -290,3 +290,8 @@ Providing dynamic UI updates
 Visualizing location-based data
 
 This project reflects practical understanding of full-stack web development concepts and RESTful architecture.
+
+udpdate github
+git add .
+git commit -m "Updated feature"
+git push
