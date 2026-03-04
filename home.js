@@ -215,7 +215,8 @@ function renderItemCard(it) {
   img.className = "item-img";
   img.alt = title;
   img.loading = "lazy";
-  img.src = imageUrl || "https://via.placeholder.com/600x400?text=Item";
+  img.src = imageUrl || "/images/placeholder.png";
+  img.onerror = () => { img.src = "/images/placeholder.png"; }; 
 
   const body = document.createElement("div");
   body.className = "item-body";
