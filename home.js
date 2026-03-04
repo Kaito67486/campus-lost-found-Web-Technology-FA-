@@ -5,6 +5,10 @@
 // - Shows only 8 recent items via slice(0, 8)
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  //  Trigger smooth page transition
+  document.body.classList.add("page-ready");
+
   // year
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -48,16 +52,6 @@ async function loadMe() {
   }
 }
 
-/**
- * Your backend supports:
- * GET /api/items?category=Lost|Found&status=Active|Claimed|Resolved&q=...
- * It returns: { ok:true, items:[{ category, status, imagePath, createdAt, ...}] }
- * Source: routes/items.js :contentReference[oaicite:1]{index=1}
- *
- * We use /api/items once and:
- * - compute stats
- * - display first 8 items
- */
 async function loadStatsAndRecent(searchQuery) {
   const grid = document.getElementById("itemsGrid");
   const empty = document.getElementById("emptyState");
@@ -70,7 +64,9 @@ async function loadStatsAndRecent(searchQuery) {
 
   try {
     const url = new URL("/api/items", window.location.origin);
-    if (searchQuery && searchQuery.trim()) url.searchParams.set("q", searchQuery.trim());
+    if (searchQuery && searchQuery.trim()) {
+      url.searchParams.set("q", searchQuery.trim());
+    }
 
     const res = await fetch(url.toString(), { credentials: "include" });
     if (!res.ok) throw new Error("Failed to load items");
@@ -78,13 +74,15 @@ async function loadStatsAndRecent(searchQuery) {
     const data = await res.json();
     const allItems = Array.isArray(data.items) ? data.items : [];
 
-    // ---- compute stats from ALL items (not just first 8) ----
+    // ---- compute stats from ALL items ----
     computeAndRenderStats(allItems);
 
-    // ---- show only first 8 in UI ----
+    // ---- show only first 8 ----
     const items = allItems.slice(0, 8);
 
-    if (count) count.textContent = `Showing ${items.length} of ${allItems.length} item${allItems.length === 1 ? "" : "s"}`;
+    if (count) {
+      count.textContent = `Showing ${items.length} of ${allItems.length} item${allItems.length === 1 ? "" : "s"}`;
+    }
 
     if (!items.length) {
       if (empty) empty.style.display = "block";
@@ -94,12 +92,13 @@ async function loadStatsAndRecent(searchQuery) {
     for (const it of items) {
       grid.appendChild(renderItemCard(it));
     }
+
   } catch (err) {
     console.error("Items load error:", err);
+
     if (count) count.textContent = "Showing 0 items";
     if (empty) empty.style.display = "block";
 
-    // set stats to 0 if error
     setText("statTotal", 0);
     setText("statLost", 0);
     setText("statFound", 0);
@@ -108,14 +107,15 @@ async function loadStatsAndRecent(searchQuery) {
 }
 
 function computeAndRenderStats(items) {
+
   let total = items.length;
   let lost = 0;
   let found = 0;
   let active = 0;
 
   for (const it of items) {
-    const cat = String(it.category || "").toLowerCase();   // "lost" | "found"
-    const st = String(it.status || "").toLowerCase();      // "active" | "claimed" | "resolved"
+    const cat = String(it.category || "").toLowerCase();
+    const st = String(it.status || "").toLowerCase();
 
     if (cat === "lost") lost++;
     if (cat === "found") found++;
@@ -129,6 +129,7 @@ function computeAndRenderStats(items) {
 }
 
 function wireSearch() {
+
   const q = document.getElementById("q");
   const btnSearch = document.getElementById("btnSearch");
   const btnClear = document.getElementById("btnClear");
@@ -148,15 +149,15 @@ function wireSearch() {
     btnClear.addEventListener("click", () => {
       q.value = "";
       loadStatsAndRecent("");
+
       if (imgFile) imgFile.value = "";
     });
   }
 
-  // Image search is NOT implemented in your backend right now.
-  // We'll keep the UI button but show a friendly message if used.
   if (imgFile) {
     imgFile.addEventListener("change", () => {
       if (!imgFile.files || !imgFile.files[0]) return;
+
       alert("Image search is not implemented yet in the backend.");
       imgFile.value = "";
     });
@@ -164,20 +165,19 @@ function wireSearch() {
 }
 
 function renderItemCard(it) {
-  // Backend fields (from your routes/items.js):
-  // - category: "Lost" | "Found"
-  // - status: "Active" | "Claimed" | "Resolved"
-  // - imagePath: "/uploads/..."
-  // - createdAt: stored as number (Date.now())
+
   const id = it.id ?? "";
   const title = it.title ?? "Untitled";
-  const category = String(it.category || "Lost"); // "Lost" | "Found"
-  const status = String(it.status || "Active");   // keep original case
+  const category = String(it.category || "Lost");
+  const status = String(it.status || "Active");
   const location = it.location ?? "Unknown location";
-  const imageUrl = it.imagePath || "";            // use imagePath from backend
+  const imageUrl = it.imagePath || "";
   const createdAtMs = Number(it.createdAt);
 
-  const createdAtText = Number.isFinite(createdAtMs) ? timeAgo(new Date(createdAtMs)) : "";
+  const createdAtText =
+    Number.isFinite(createdAtMs)
+      ? timeAgo(new Date(createdAtMs))
+      : "";
 
   const a = document.createElement("a");
   a.className = "item-card";
@@ -202,7 +202,7 @@ function renderItemCard(it) {
 
   const st = document.createElement("span");
   st.className = "status";
-  st.textContent = status; // "Active", "Claimed", "Resolved"
+  st.textContent = status;
 
   top.appendChild(badge);
   top.appendChild(st);
@@ -213,7 +213,9 @@ function renderItemCard(it) {
 
   const meta = document.createElement("div");
   meta.className = "item-meta";
-  meta.textContent = createdAtText ? `${location} • ${createdAtText}` : location;
+  meta.textContent = createdAtText
+    ? `${location} • ${createdAtText}`
+    : location;
 
   body.appendChild(top);
   body.appendChild(h);
@@ -231,6 +233,7 @@ function setText(id, value) {
 }
 
 function timeAgo(date) {
+
   const diff = Date.now() - date.getTime();
   const sec = Math.floor(diff / 1000);
   const min = Math.floor(sec / 60);
@@ -240,5 +243,6 @@ function timeAgo(date) {
   if (day > 0) return `${day} day${day === 1 ? "" : "s"} ago`;
   if (hr > 0) return `${hr} hour${hr === 1 ? "" : "s"} ago`;
   if (min > 0) return `${min} min ago`;
+
   return "just now";
 }
