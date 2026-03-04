@@ -362,3 +362,58 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+//index,register,login.html design
+
+// Page fade-in
+document.addEventListener("DOMContentLoaded", () => {
+  // Add "page" class in HTML for this to work (see step 3 below)
+  document.body.classList.add("page-ready");
+
+  // Footer year
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  // Ripple effect on buttons/links that have .btn
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".btn");
+    if (!btn) return;
+
+    const rect = btn.getBoundingClientRect();
+    const ripple = document.createElement("span");
+    ripple.className = "ripple";
+
+    const size = Math.max(rect.width, rect.height);
+    ripple.style.width = ripple.style.height = size + "px";
+
+    const x = e.clientX - rect.left - size / 2;
+    const y = e.clientY - rect.top - size / 2;
+    ripple.style.left = x + "px";
+    ripple.style.top = y + "px";
+
+    btn.appendChild(ripple);
+    ripple.addEventListener("animationend", () => ripple.remove());
+  });
+
+  // Smooth fade-out transition on internal navigation
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("a");
+    if (!a) return;
+
+    const href = a.getAttribute("href");
+    if (!href) return;
+
+    const isExternal = /^https?:\/\//.test(href);
+    const isAnchor = href.startsWith("#");
+    const isNewTab = a.target === "_blank";
+
+    if (isExternal || isAnchor || isNewTab) return;
+
+    e.preventDefault();
+    document.body.classList.remove("page-ready");
+
+    setTimeout(() => {
+      window.location.href = href;
+    }, 180);
+  });
+});
