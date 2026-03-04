@@ -816,24 +816,24 @@ body {
 
   --border:#E6EBF2;
 
-  --success:#22C55E;
-  --danger:#EF4444;
-  --warning:#F59E0B;
-
   --radius:14px;
-  --shadow: 0 10px 30px rgba(17,24,39,.08);
-  --shadowSm: 0 6px 18px rgba(17,24,39,.08);
 
-  --ring: 0 0 0 4px rgba(37,99,235,.18);
+  --shadow:0 10px 30px rgba(17,24,39,.08);
+  --shadowSm:0 6px 18px rgba(17,24,39,.08);
 
-  --ease: cubic-bezier(.2,.8,.2,1);
-  --speed: 220ms;
-  --speedSlow: 420ms;
+  --ring:0 0 0 4px rgba(37,99,235,.18);
 
-  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --speed:220ms;
+  --speedSlow:420ms;
+
+  --font:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
 }
 
-/* ---- Reset ---- */
+/* =========================
+   RESET
+========================= */
+
 *{
   box-sizing:border-box;
   margin:0;
@@ -881,9 +881,6 @@ body.page.page-ready{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  position:sticky;
-  top:0;
-  z-index:10;
 }
 
 .topbar-left{
@@ -928,16 +925,12 @@ body.page.page-ready{
 }
 
 /* =========================
-   TYPOGRAPHY
+   TEXT
 ========================= */
 
 .muted{
   color:var(--muted);
   font-size:14px;
-}
-
-.small{
-  font-size:13px;
 }
 
 /* =========================
@@ -973,6 +966,9 @@ body.page.page-ready{
 
 .btn-primary{
 
+  position:relative;
+  overflow:hidden;
+
   background:linear-gradient(
     135deg,
     #2563EB,
@@ -984,8 +980,7 @@ body.page.page-ready{
 
   color:white;
 
-  box-shadow:
-    0 10px 25px rgba(37,99,235,.25);
+  box-shadow:0 10px 25px rgba(37,99,235,.25);
 
   transition:
     transform .25s ease,
@@ -999,38 +994,62 @@ body.page.page-ready{
 
   background-position:right center;
 
-  box-shadow:
-    0 18px 40px rgba(37,99,235,.35);
+  box-shadow:0 18px 40px rgba(37,99,235,.35);
 }
 
 .btn-primary:active{
 
   transform:scale(.97);
 
-  box-shadow:
-    0 6px 18px rgba(37,99,235,.25);
+  box-shadow:0 6px 18px rgba(37,99,235,.25);
 }
 
-/* =========================
-   NAVBAR BUTTON
-========================= */
+/* ===== Shimmer effect ===== */
 
-.btn-ghost{
+.btn-primary::after{
 
-  background:rgba(255,255,255,.12);
+  content:"";
 
-  color:#E8F0FF;
+  position:absolute;
 
-  border-color:rgba(255,255,255,.18);
+  top:-60%;
 
-  backdrop-filter:blur(8px);
+  left:-40%;
+
+  width:60%;
+
+  height:220%;
+
+  transform:rotate(25deg) translateX(-120%);
+
+  background:linear-gradient(
+    90deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,.35) 45%,
+    rgba(255,255,255,0) 100%
+  );
+
+  pointer-events:none;
+
+  opacity:0;
 }
 
-.btn-ghost:hover{
+.btn-primary:hover::after{
 
-  background:rgba(255,255,255,.18);
+  opacity:1;
 
-  transform:translateY(-1px);
+  animation:shimmer 800ms ease forwards;
+}
+
+@keyframes shimmer{
+
+  from{
+    transform:rotate(25deg) translateX(-120%);
+  }
+
+  to{
+    transform:rotate(25deg) translateX(260%);
+  }
 }
 
 /* =========================
@@ -1054,32 +1073,27 @@ body.page.page-ready{
 }
 
 /* =========================
-   DANGER BUTTON
+   NAVBAR BUTTON
 ========================= */
 
-.btn-danger{
+.btn-ghost{
 
-  background:#FEE2E2;
+  background:rgba(255,255,255,.12);
 
-  color:#B91C1C;
+  color:#E8F0FF;
 
-  border-color:#FECACA;
+  border-color:rgba(255,255,255,.18);
 }
 
-.btn-danger:hover{
+.btn-ghost:hover{
+
+  background:rgba(255,255,255,.18);
 
   transform:translateY(-1px);
-
-  box-shadow:0 8px 18px rgba(185,28,28,.15);
-}
-
-.btn-block{
-  width:100%;
-  justify-content:center;
 }
 
 /* =========================
-   CENTER LAYOUT
+   CENTERED LAYOUT
 ========================= */
 
 .auth{
@@ -1235,56 +1249,6 @@ body.page.page-ready{
   font-size:14px;
 
   font-weight:650;
-}
-
-/* =========================
-   TOAST
-========================= */
-
-.toast{
-
-  border-radius:14px;
-
-  border:1px solid var(--border);
-
-  padding:12px;
-
-  font-size:14px;
-
-  margin:12px 0;
-
-  background:#fff;
-
-  box-shadow:var(--shadowSm);
-
-  animation:toastIn .3s ease both;
-}
-
-.toast.success{
-
-  border-color:rgba(34,197,94,.28);
-
-  background:rgba(34,197,94,.10);
-}
-
-.toast.error{
-
-  border-color:rgba(239,68,68,.28);
-
-  background:rgba(239,68,68,.10);
-}
-
-@keyframes toastIn{
-
-  from{
-    opacity:0;
-    transform:translateY(-6px);
-  }
-
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
 }
 
 /* =========================
