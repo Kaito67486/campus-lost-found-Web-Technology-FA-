@@ -183,13 +183,18 @@ router.post("/", requireLogin, upload.single("photo"), async (req, res) => {
     const location = sanitizeText(req.body.location, 80);
     const date = sanitizeText(req.body.date, 10);
     const contact = sanitizeText(req.body.contact, 120);
+    const today = new Date().toISOString().slice(0, 10);
 
     if (!CATEGORIES.has(category)) return res.status(400).json({ ok: false, msg: "Invalid category." });
     if (!STATUSES.has(status)) return res.status(400).json({ ok: false, msg: "Invalid status." });
     if (title.length < 3) return res.status(400).json({ ok: false, msg: "Title too short." });
     if (description.length < 10) return res.status(400).json({ ok: false, msg: "Description too short." });
     if (location.length < 3) return res.status(400).json({ ok: false, msg: "Location too short." });
-    if (!isISODate(date)) return res.status(400).json({ ok: false, msg: "Date must be YYYY-MM-DD." });
+    if (!isISODate(date)) {
+    return res.status(400).json({ ok: false, msg: "Date must be YYYY-MM-DD." });}
+    if (date > today) {
+    return res.status(400).json({ ok: false, msg: "Date cannot be in the future." });
+    }
     if (contact.length < 3) return res.status(400).json({ ok: false, msg: "Contact too short." });
 
     const referenceCode = await nextRefCode(category);
@@ -224,12 +229,18 @@ router.put("/:id", requireLogin, requireOwner, upload.single("photo"), async (re
     const location = sanitizeText(req.body.location, 80);
     const date = sanitizeText(req.body.date, 10);
     const contact = sanitizeText(req.body.contact, 120);
+    const today = new Date().toISOString().slice(0, 10);
 
     if (!STATUSES.has(status)) return res.status(400).json({ ok: false, msg: "Invalid status." });
     if (title.length < 3) return res.status(400).json({ ok: false, msg: "Title too short." });
     if (description.length < 10) return res.status(400).json({ ok: false, msg: "Description too short." });
     if (location.length < 3) return res.status(400).json({ ok: false, msg: "Location too short." });
-    if (!isISODate(date)) return res.status(400).json({ ok: false, msg: "Date must be YYYY-MM-DD." });
+    if (!isISODate(date)) {
+    return res.status(400).json({ ok: false, msg: "Date must be YYYY-MM-DD." });
+    }
+    if (date > today) {
+    return res.status(400).json({ ok: false, msg: "Date cannot be in the future." });
+    }
     if (contact.length < 3) return res.status(400).json({ ok: false, msg: "Contact too short." });
 
     const now = Date.now();
