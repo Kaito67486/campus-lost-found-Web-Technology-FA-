@@ -798,70 +798,78 @@ body {
   box-shadow:0 0 0 3px rgba(255,0,0,0.3);
 }
 
-/* =========================================================
-   Modern SaaS refresh (NON-NAV only)
-   Paste at the END of style.css
-   ========================================================= */
+/* =========================
+   Modern SaaS (NON-NAV) — paste at END
+========================= */
 
-:root{
-  --bg-0:#0b1220;
-  --bg-1:#0f1b32;
-  --card:#ffffff;
-  --text:#0f172a;
-  --muted:#64748b;
-  --border: rgba(15, 23, 42, 0.10);
-
-  --primary:#2563eb;
-  --primary-2:#3b82f6;
-
-  --ring: rgba(37, 99, 235, 0.25);
-  --shadow: 0 18px 50px rgba(2, 6, 23, 0.18);
-}
-
-/* Background (page) — excludes the nav by targeting body only */
 body{
   background:
-    radial-gradient(900px 500px at 20% 25%, rgba(59,130,246,0.25), transparent 60%),
+    radial-gradient(900px 500px at 20% 25%, rgba(59,130,246,0.22), transparent 60%),
     radial-gradient(700px 450px at 80% 35%, rgba(99,102,241,0.18), transparent 60%),
     linear-gradient(180deg, #f8fafc 0%, #eef2ff 45%, #f8fafc 100%);
-  color: var(--text);
+  color:#0f172a;
+  min-height: 100vh;
+  display:flex;
+  flex-direction:column;
 }
 
-/* Centered auth layout */
-.auth{
+/* main area */
+main.auth{
+  flex:1;
   min-height: calc(100vh - 64px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
   padding: 48px 20px;
-  position: relative;
+  position:relative;
+  overflow:hidden;
 }
 
-/* Subtle “grid” texture for SaaS feel */
-.auth::before{
+/* soft “sparkle” + texture */
+main.auth::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  pointer-events:none;
+  background-image:
+    radial-gradient(circle at 15% 25%, rgba(255,255,255,0.55) 0 2px, transparent 3px),
+    radial-gradient(circle at 70% 35%, rgba(255,255,255,0.40) 0 2px, transparent 3px),
+    radial-gradient(circle at 35% 75%, rgba(255,255,255,0.35) 0 2px, transparent 3px),
+    linear-gradient(rgba(15,23,42,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15,23,42,0.05) 1px, transparent 1px);
+  background-size: auto, auto, auto, 44px 44px, 44px 44px;
+  opacity:0.55;
+  mask-image: radial-gradient(closest-side at 50% 40%, black 0%, transparent 70%);
+}
+
+/* big glow blobs */
+main.auth::after{
   content:"";
   position:absolute;
   inset:0;
   pointer-events:none;
-  background-image:
-    linear-gradient(rgba(15,23,42,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(15,23,42,0.05) 1px, transparent 1px);
-  background-size: 44px 44px;
-  mask-image: radial-gradient(closest-side at 50% 35%, black 0%, transparent 70%);
-  opacity: 0.45;
+  background:
+    radial-gradient(380px 380px at 15% 35%, rgba(59,130,246,0.22), transparent 65%),
+    radial-gradient(420px 420px at 85% 50%, rgba(99,102,241,0.18), transparent 65%);
 }
 
-/* Card (modern SaaS) */
 .auth-card{
-  max-width: 560px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-  padding: 28px 28px 26px;
+  width: min(620px, 94vw);
+  text-align:center; /* replaces your inline style */
+  position:relative;
+  z-index:1;
+
   background: rgba(255,255,255,0.86);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  position: relative;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(15,23,42,0.10);
+  border-radius: 20px;
+  padding: 30px 30px 26px;
+  box-shadow: 0 22px 60px rgba(2,6,23,0.20);
 }
 
-/* Tiny accent bar on top of the card */
+/* top accent line */
 .auth-card::before{
   content:"";
   position:absolute;
@@ -870,77 +878,57 @@ body{
   top: 14px;
   height: 4px;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--primary), var(--primary-2));
-  opacity: 0.9;
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
 }
 
-/* Typography */
 .auth-title{
-  font-size: 30px;
-  letter-spacing: -0.02em;
+  margin-top: 16px;
+  font-size: 34px;
   line-height: 1.12;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  letter-spacing: -0.02em;
 }
 
 .muted{
-  color: var(--muted);
-  font-size: 14.5px;
+  color:#64748b;
+  font-size: 15px;
 }
 
-/* Buttons — consistent modern style */
+/* buttons */
 .btn{
   border-radius: 14px;
   padding: 12px 14px;
   font-weight: 650;
-  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease, background .12s ease;
-}
-
-.btn:focus{
-  outline: none;
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
 }
 
 .btn:focus-visible{
-  box-shadow: 0 0 0 5px var(--ring);
+  outline:none;
+  box-shadow: 0 0 0 5px rgba(37,99,235,0.25);
 }
 
 .btn-primary{
-  background: linear-gradient(180deg, var(--primary-2), var(--primary));
-  color: #fff;
+  background: linear-gradient(180deg, #3b82f6, #2563eb);
+  color:#fff;
   box-shadow: 0 12px 26px rgba(37,99,235,0.22);
 }
 
-.btn-primary:hover{
-  filter: brightness(1.03);
-  transform: translateY(-1px);
-}
+.btn-primary:hover{ transform: translateY(-1px); filter: brightness(1.03); }
 
 .btn-ghost{
-  background: rgba(15, 23, 42, 0.04);
-  color: #1d4ed8;
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(15,23,42,0.04);
+  border: 1px solid rgba(15,23,42,0.10);
+  color:#1d4ed8;
 }
 
-.btn-ghost:hover{
-  background: rgba(37, 99, 235, 0.06);
-  transform: translateY(-1px);
-}
+.btn-ghost:hover{ transform: translateY(-1px); background: rgba(37,99,235,0.06); }
 
-/* Footer fits the new look */
 .footer{
+  text-align:center;
+  padding: 18px 12px 26px;
   color: rgba(100,116,139,0.9);
 }
 
-/* Mobile polish */
-@media (max-width: 520px){
-  .auth{
-    padding: 34px 16px;
-  }
-  .auth-card{
-    padding: 22px 18px 20px;
-    border-radius: 18px;
-  }
-  .auth-title{
-    font-size: 26px;
-  }
+@media (max-width:520px){
+  .auth-card{ padding: 22px 18px 20px; border-radius: 18px; }
+  .auth-title{ font-size: 28px; }
 }
