@@ -1,4 +1,4 @@
-// routes/items.js (CommonJS) - MySQL + session auth + photo upload (multer)
+// routes/items.js (CommonJS) - MySQL + session auth + Cloudinary photo upload
 //
 // Endpoints:
 // GET    /api/items?category=Lost|Found&status=Active|Claimed|Resolved&q=...
@@ -9,10 +9,10 @@
 // DELETE /api/items/:id          (login + owner)
 
 const express = require("express");
-const path = require("path");
 const multer = require("multer");
 const { query, transaction } = require("../db");
 const requireLogin = require("../middleware/requireLogin");
+const cloudinary = require("../cloudinary"); // ✅ NEW
 
 const router = express.Router();
 
@@ -45,7 +45,7 @@ function toApiItem(row) {
     location: row.location,
     date: row.date,
     contact: row.contact,
-    imagePath: row.image_path || null, // ✅ NEW
+    imagePath: row.image_path || null,
     ownerUserId: row.owner_user_id,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
@@ -53,14 +53,8 @@ function toApiItem(row) {
 }
 
 // ---------- multer (photo upload) ----------
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, path.join(__dirname, "..", "uploads")),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname || "").toLowerCase();
-    const safe = [".jpg", ".jpeg", ".png", ".webp"].includes(ext) ? ext : ".jpg";
-    cb(null, `${Date.now()}-${Math.random().toString(16).slice(2)}${safe}`);
-  },
-});
+// ✅ Use memory storage (Cloudinary upload)
+const storage = multer.memoryStorage();
 
 function fileFilter(req, file, cb) {
   const okTypes = ["image/jpeg", "image/png", "image/webp"];
@@ -75,6 +69,20 @@ const upload = multer({
   fileFilter,
   limits: { fileSize: 3 * 1024 * 1024 }, // 3MB
 });
+
+// ---------- helper: upload buffer to cloudinary ----------
+async function uploadToCloudinary(file) {
+  // file is multer file from memoryStorage: { buffer, mimetype, ... }
+  const base64 = file.buffer.toString("base64");
+  const dataUri = `data:${file.mimetype};base64,${base64}`;
+
+  const result = await cloudinary.uploader.upload(dataUri, {
+    folder: "campus-lost-found",
+    resource_type: "image",
+  });
+
+  return result.secure_url; // ✅ permanent URL
+}
 
 // ---------- reference code generator ----------
 async function nextRefCode(category) {
@@ -125,19 +133,25 @@ router.get("/", async (req, res) => {
     const params = [];
 
     if (category) {
-      if (!CATEGORIES.has(category)) return res.status(400).json({ ok: false, msg: "Invalid category." });
+      if (!CATEGORIES.has(category)) {
+        return res.status(400).json({ ok: false, msg: "Invalid category." });
+      }
       where.push("category = ?");
       params.push(category);
     }
 
     if (status) {
-      if (!STATUSES.has(status)) return res.status(400).json({ ok: false, msg: "Invalid status." });
+      if (!STATUSES.has(status)) {
+        return res.status(400).json({ ok: false, msg: "Invalid status." });
+      }
       where.push("status = ?");
       params.push(status);
     }
 
     if (q) {
-      where.push("(reference_code LIKE ? OR title LIKE ? OR description LIKE ? OR location LIKE ?)");
+      where.push(
+        "(reference_code LIKE ? OR title LIKE ? OR description LIKE ? OR location LIKE ?)"
+      );
       const like = `%${q}%`;
       params.push(like, like, like, like);
     }
@@ -190,17 +204,23 @@ router.post("/", requireLogin, upload.single("photo"), async (req, res) => {
     if (title.length < 3) return res.status(400).json({ ok: false, msg: "Title too short." });
     if (description.length < 10) return res.status(400).json({ ok: false, msg: "Description too short." });
     if (location.length < 3) return res.status(400).json({ ok: false, msg: "Location too short." });
+
     if (!isISODate(date)) {
-    return res.status(400).json({ ok: false, msg: "Date must be YYYY-MM-DD." });}
+      return res.status(400).json({ ok: false, msg: "Date must be YYYY-MM-DD." });
+    }
     if (date > today) {
-    return res.status(400).json({ ok: false, msg: "Date cannot be in the future." });
+      return res.status(400).json({ ok: false, msg: "Date cannot be in the future." });
     }
     if (contact.length < 3) return res.status(400).json({ ok: false, msg: "Contact too short." });
 
     const referenceCode = await nextRefCode(category);
     const now = Date.now();
 
-    const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+    // ✅ Cloudinary upload (optional)
+    let imagePath = null;
+    if (req.file) {
+      imagePath = await uploadToCloudinary(req.file);
+    }
 
     const result = await query(
       `INSERT INTO items
@@ -235,16 +255,22 @@ router.put("/:id", requireLogin, requireOwner, upload.single("photo"), async (re
     if (title.length < 3) return res.status(400).json({ ok: false, msg: "Title too short." });
     if (description.length < 10) return res.status(400).json({ ok: false, msg: "Description too short." });
     if (location.length < 3) return res.status(400).json({ ok: false, msg: "Location too short." });
+
     if (!isISODate(date)) {
-    return res.status(400).json({ ok: false, msg: "Date must be YYYY-MM-DD." });
+      return res.status(400).json({ ok: false, msg: "Date must be YYYY-MM-DD." });
     }
     if (date > today) {
-    return res.status(400).json({ ok: false, msg: "Date cannot be in the future." });
+      return res.status(400).json({ ok: false, msg: "Date cannot be in the future." });
     }
     if (contact.length < 3) return res.status(400).json({ ok: false, msg: "Contact too short." });
 
     const now = Date.now();
-    const imagePath = req.file ? `/uploads/${req.file.filename}` : (existing.image_path || null);
+
+    // ✅ keep old imagePath unless new photo uploaded
+    let imagePath = existing.image_path || null;
+    if (req.file) {
+      imagePath = await uploadToCloudinary(req.file);
+    }
 
     await query(
       `UPDATE items
