@@ -18,6 +18,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.set("trust proxy", 1);
+
 app.use(
   session({
     name: "lf_session",
@@ -26,8 +28,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      sameSite: "lax",
-      secure: false // set true if using HTTPS
+      sameSite: "none",
+      secure: true
     }
   })
 );
