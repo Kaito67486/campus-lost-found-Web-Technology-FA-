@@ -374,27 +374,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // Ripple effect on buttons/links that have .btn
-  document.addEventListener("click", (e) => {
-    const btn = e.target.closest(".btn");
-    if (!btn) return;
-
-    const rect = btn.getBoundingClientRect();
-    const ripple = document.createElement("span");
-    ripple.className = "ripple";
-
-    const size = Math.max(rect.width, rect.height);
-    ripple.style.width = ripple.style.height = size + "px";
-
-    const x = e.clientX - rect.left - size / 2;
-    const y = e.clientY - rect.top - size / 2;
-    ripple.style.left = x + "px";
-    ripple.style.top = y + "px";
-
-    btn.appendChild(ripple);
-    ripple.addEventListener("animationend", () => ripple.remove());
-  });
-
   // Smooth fade-out transition on internal navigation
   document.addEventListener("click", (e) => {
     const a = e.target.closest("a");
