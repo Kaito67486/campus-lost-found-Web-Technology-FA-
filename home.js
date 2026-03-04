@@ -1,19 +1,19 @@
-// home.js - Works with your CURRENT backend (routes/items.js)
-// - No backend changes needed
-// - Uses /api/items?q=... (already supported)
-// - Computes stats on frontend (since no /api/items/stats)
-// - Shows only 8 recent items via slice(0, 8)
+// home.js - Works with your CURRENT backend
+// - Uses /api/auth/me and /api/items?q=...
+// - Computes stats on frontend
+// - Shows only 8 recent items
+// - Adds smooth page transition + animated counters
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  //  Trigger smooth page transition
+  // ✅ Trigger smooth page transition
   document.body.classList.add("page-ready");
 
   // year
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // logout (if script.js already does this, it's still fine)
+  // logout
   const btnLogout = document.getElementById("btnLogout");
   if (btnLogout) {
     btnLogout.addEventListener("click", async () => {
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function init() {
   await loadMe();
-  await loadStatsAndRecent(""); // load stats + recent items (no search)
+  await loadStatsAndRecent(""); // load stats + recent items
   wireSearch();
 }
 
@@ -50,6 +50,33 @@ async function loadMe() {
   } catch (err) {
     console.error("HOME ME ERROR:", err);
   }
+}
+
+/* =========================
+   ✅ Animated Counters
+========================= */
+function animateNumber(el, to, duration = 650) {
+  if (!el) return;
+
+  const target = Number(to) || 0;
+  const startValue = Number(el.textContent) || 0;
+
+  // if already same, do nothing
+  if (startValue === target) return;
+
+  const start = performance.now();
+
+  function tick(now) {
+    const t = Math.min(1, (now - start) / duration);
+    // ease-out cubic
+    const eased = 1 - Math.pow(1 - t, 3);
+    const value = Math.round(startValue + (target - startValue) * eased);
+    el.textContent = String(value);
+
+    if (t < 1) requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
 }
 
 async function loadStatsAndRecent(searchQuery) {
@@ -74,7 +101,7 @@ async function loadStatsAndRecent(searchQuery) {
     const data = await res.json();
     const allItems = Array.isArray(data.items) ? data.items : [];
 
-    // ---- compute stats from ALL items ----
+    // ---- compute stats from ALL items (ANIMATED) ----
     computeAndRenderStats(allItems);
 
     // ---- show only first 8 ----
@@ -99,15 +126,12 @@ async function loadStatsAndRecent(searchQuery) {
     if (count) count.textContent = "Showing 0 items";
     if (empty) empty.style.display = "block";
 
-    setText("statTotal", 0);
-    setText("statLost", 0);
-    setText("statFound", 0);
-    setText("statActive", 0);
+    // animate down to 0
+    computeAndRenderStats([]);
   }
 }
 
 function computeAndRenderStats(items) {
-
   let total = items.length;
   let lost = 0;
   let found = 0;
@@ -122,14 +146,14 @@ function computeAndRenderStats(items) {
     if (st === "active") active++;
   }
 
-  setText("statTotal", total);
-  setText("statLost", lost);
-  setText("statFound", found);
-  setText("statActive", active);
+  // ✅ animate numbers
+  animateNumber(document.getElementById("statTotal"), total);
+  animateNumber(document.getElementById("statLost"), lost);
+  animateNumber(document.getElementById("statFound"), found);
+  animateNumber(document.getElementById("statActive"), active);
 }
 
 function wireSearch() {
-
   const q = document.getElementById("q");
   const btnSearch = document.getElementById("btnSearch");
   const btnClear = document.getElementById("btnClear");
@@ -149,7 +173,6 @@ function wireSearch() {
     btnClear.addEventListener("click", () => {
       q.value = "";
       loadStatsAndRecent("");
-
       if (imgFile) imgFile.value = "";
     });
   }
@@ -157,7 +180,6 @@ function wireSearch() {
   if (imgFile) {
     imgFile.addEventListener("change", () => {
       if (!imgFile.files || !imgFile.files[0]) return;
-
       alert("Image search is not implemented yet in the backend.");
       imgFile.value = "";
     });
@@ -165,7 +187,6 @@ function wireSearch() {
 }
 
 function renderItemCard(it) {
-
   const id = it.id ?? "";
   const title = it.title ?? "Untitled";
   const category = String(it.category || "Lost");
@@ -213,9 +234,7 @@ function renderItemCard(it) {
 
   const meta = document.createElement("div");
   meta.className = "item-meta";
-  meta.textContent = createdAtText
-    ? `${location} • ${createdAtText}`
-    : location;
+  meta.textContent = createdAtText ? `${location} • ${createdAtText}` : location;
 
   body.appendChild(top);
   body.appendChild(h);
@@ -227,13 +246,7 @@ function renderItemCard(it) {
   return a;
 }
 
-function setText(id, value) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = String(value);
-}
-
 function timeAgo(date) {
-
   const diff = Date.now() - date.getTime();
   const sec = Math.floor(diff / 1000);
   const min = Math.floor(sec / 60);
@@ -243,6 +256,5 @@ function timeAgo(date) {
   if (day > 0) return `${day} day${day === 1 ? "" : "s"} ago`;
   if (hr > 0) return `${hr} hour${hr === 1 ? "" : "s"} ago`;
   if (min > 0) return `${min} min ago`;
-
   return "just now";
 }
