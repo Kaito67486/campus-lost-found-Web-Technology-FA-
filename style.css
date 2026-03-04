@@ -1495,3 +1495,19 @@ body{
   margin-top:20px;
   color:#6B7280;
 }
+
+/* ===== Stat number "pop" animation ===== */
+.stat-value{
+  display: inline-block;          /* needed so transform works nicely */
+  transform-origin: 50% 60%;
+}
+
+.stat-value.pop{
+  animation: statPop 420ms cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes statPop{
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}

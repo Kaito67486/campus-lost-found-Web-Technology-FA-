@@ -61,19 +61,26 @@ function animateNumber(el, to, duration = 650) {
   const target = Number(to) || 0;
   const startValue = Number(el.textContent) || 0;
 
-  // if already same, do nothing
   if (startValue === target) return;
 
   const start = performance.now();
 
+  // remove class so animation can re-run every time
+  el.classList.remove("pop");
+
   function tick(now) {
     const t = Math.min(1, (now - start) / duration);
-    // ease-out cubic
     const eased = 1 - Math.pow(1 - t, 3);
     const value = Math.round(startValue + (target - startValue) * eased);
     el.textContent = String(value);
 
-    if (t < 1) requestAnimationFrame(tick);
+    if (t < 1) {
+      requestAnimationFrame(tick);
+    } else {
+      // trigger pop when finished
+      el.classList.add("pop");
+      el.addEventListener("animationend", () => el.classList.remove("pop"), { once: true });
+    }
   }
 
   requestAnimationFrame(tick);
