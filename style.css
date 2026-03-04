@@ -1296,3 +1296,15 @@ body.page.page-ready{
     padding:10px 14px;
   }
 }
+
+.btn-ghost-light{
+  background:#EEF2FF;
+  color:#1D4ED8;
+  border-color:#D6E6FF;
+}
+
+.btn-ghost-light:hover{
+  filter: brightness(.98);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(37,99,235,.12);
+}
