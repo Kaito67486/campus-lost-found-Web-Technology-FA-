@@ -78,8 +78,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!name) return "Please enter your full name.";
     if (name.length < 2) return "Name must be at least 2 characters.";
     if (!email) return "Please enter your email.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      return "Please enter a valid email.";
+    if (!/^[^\s@]+@qiu\.edu\.my$/.test(email))
+      return "Please use your QIU email (example: ong@qiu.edu.my).";
     if (!password) return "Please enter a password.";
     if (password.length < 6)
       return "Password must be at least 6 characters.";

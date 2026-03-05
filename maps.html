@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 
-<body>
+<body class="page">
   <!-- TOP BAR -->
   <header class="topbar">
     <div class="topbar-left">
@@ -24,9 +24,8 @@
     </div>
   </header>
 
-  <!-- APP GRID: SIDEBAR + MAIN -->
   <div class="app">
-    <!-- SIDEBAR (same structure as lost.html) -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
       <nav class="side-nav">
 
@@ -69,7 +68,6 @@
           Lost Items
         </a>
 
-        <!-- Map Overview (ACTIVE) -->
         <a class="side-link active" href="maps.html">
           <span class="icon">
             <svg viewBox="0 0 24 24">
@@ -105,57 +103,59 @@
       <div class="page-head">
         <div>
           <h1 class="page-title">Map Overview</h1>
-          <p class="muted">See hotspots by location. Click a place to filter items.</p>
+          <p class="muted">See hotspots by location. Hover pins to preview, click to filter items.</p>
         </div>
         <div class="muted" id="resultCount">0 places</div>
       </div>
 
-      <!-- CONTENT GRID -->
       <div class="map-layout">
-        <!-- Map card -->
+        <!-- MAP CARD -->
         <section class="card">
           <div class="card-head">
             <div>
               <div class="card-title">Campus Map</div>
-              <div class="muted small">Embed your campus map here</div>
+              <div class="muted small">Hover pins for details • Click to filter</div>
             </div>
           </div>
 
           <!-- Floor buttons -->
-        <div class="floor-tabs" style="display:flex; gap:10px; margin:12px 0;">
-        <button class="btn btn-ghost floor-btn active" data-floor="gf" type="button">TTS Ground Floor</button>
-        <button class="btn btn-ghost floor-btn" data-floor="l3" type="button">TTS Level 3</button>
-        <button class="btn btn-ghost floor-btn" data-floor="l4" type="button">TTS Level 4</button>
-        </div>
+          <div class="floor-tabs">
+            <button class="btn btn-ghost floor-btn active" data-floor="gf" type="button">TTS Ground Floor</button>
+            <button class="btn btn-ghost floor-btn" data-floor="l3" type="button">TTS Level 3</button>
+            <button class="btn btn-ghost floor-btn" data-floor="l4" type="button">TTS Level 4</button>
+          </div>
 
-        <!-- Map image -->
-        <div class="map-frame" style="overflow:hidden;">
-        <img
-            id="floorMap"
-            class="floor-map"
-            src="images/tts-gf.png"
-            alt="TTS Building Map"
-        />
-        </div>
+          <!-- Map image + pins -->
+          <div class="map-frame" id="mapFrame">
+            <img id="floorMap" class="floor-map" src="images/tts-gf.png" alt="TTS Building Map" />
+            <div class="map-pins" id="mapPins"></div>
+
+            <!-- Tooltip -->
+            <div class="map-tooltip" id="mapTooltip" aria-hidden="true"></div>
+          </div>
+
+          <div class="muted small map-hint">
+            Tip: Pins change color based on report volume (heat). Grey means no reports yet.
+          </div>
         </section>
 
-        <!-- Locations card -->
+        <!-- LOCATIONS CARD -->
         <section class="card">
-          <div class="card-head" style="display:flex;justify-content:space-between;align-items:center;">
+          <div class="card-head loc-head">
             <div class="card-title">Locations</div>
             <div class="muted small" id="locCount">0 places</div>
           </div>
 
           <div id="locationsList" class="locations-list"></div>
 
-          <div class="muted small" style="padding:12px 14px;">
-            Tip: Click a location to jump to Lost/Found list filtered by that place.
+          <div class="muted small loc-foot">
+            Tip: Click a location to jump to Lost Items filtered by that place.
           </div>
         </section>
       </div>
 
       <footer class="footer">
-        © 2026 Campus Lost &amp; Found
+        © <span id="year"></span> Campus Lost &amp; Found
       </footer>
     </main>
   </div>
