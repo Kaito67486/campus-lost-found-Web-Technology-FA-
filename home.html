@@ -114,18 +114,30 @@
         </p>
 
         <div class="search-card">
-          <div class="search-row">
-            <input id="q" type="text" placeholder="Search (e.g., wallet, library, black bag)..." />
-            <button class="btn btn-primary" id="btnSearch" type="button">Search</button>
-          </div>
+          <div class="search-modern">
+            <span class="search-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="M21 21l-4.3-4.3"></path>
+              </svg>
+            </span>
 
-          <div class="search-actions">
-            <button class="btn btn-ghost-light" id="btnClear" type="button">Clear</button>
+            <input
+              id="q"
+              type="text"
+              placeholder="Search (e.g., wallet, library, black bag)..."
+              autocomplete="off"
+            />
+
+            <button id="btnClear" class="clear-btn" type="button" aria-label="Clear search">
+              ×
+            </button>
           </div>
 
           <p class="help">
             Tip: Try “library 2nd floor”, “blue jacket”, or “charger”.
           </p>
+
         </div>
       </section>
 

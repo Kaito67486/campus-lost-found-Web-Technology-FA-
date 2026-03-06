@@ -162,24 +162,37 @@ function computeAndRenderStats(items) {
 
 function wireSearch() {
   const q = document.getElementById("q");
-  const btnSearch = document.getElementById("btnSearch");
   const btnClear = document.getElementById("btnClear");
   const imgFile = document.getElementById("imgFile");
 
-  if (btnSearch && q) {
-    btnSearch.addEventListener("click", () => loadStatsAndRecent(q.value));
+  if (!q) return;
+
+  function toggleClear() {
+    if (!btnClear) return;
+    if (q.value.trim()) {
+      btnClear.classList.add("show");
+    } else {
+      btnClear.classList.remove("show");
+    }
   }
 
-  if (q) {
-    q.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") loadStatsAndRecent(q.value);
-    });
-  }
+  q.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      loadStatsAndRecent(q.value);
+    }
+  });
 
-  if (btnClear && q) {
+  q.addEventListener("input", () => {
+    toggleClear();
+  });
+
+  if (btnClear) {
     btnClear.addEventListener("click", () => {
       q.value = "";
+      toggleClear();
       loadStatsAndRecent("");
+      q.focus();
       if (imgFile) imgFile.value = "";
     });
   }
@@ -191,6 +204,8 @@ function wireSearch() {
       imgFile.value = "";
     });
   }
+
+  toggleClear();
 }
 
 function renderItemCard(it) {
