@@ -8,7 +8,6 @@
 </head>
 
 <body class="page">
-  <!-- TOP BAR -->
   <header class="topbar">
     <div class="topbar-left">
       <div class="logo">LF</div>
@@ -20,12 +19,11 @@
 
     <div class="topbar-right">
       <span class="user-pill" id="welcomeText">Welcome 👋</span>
-      <button class="btn btn-ghost" id="btnLogout" type="button">Logout</button>
+      <button class="btn btn-ghost-dark" id="btnLogout" type="button">Logout</button>
     </div>
   </header>
 
   <div class="app">
-    <!-- SIDEBAR -->
     <aside class="sidebar">
       <nav class="side-nav">
 
@@ -98,7 +96,6 @@
       </nav>
     </aside>
 
-    <!-- MAIN -->
     <main class="main">
       <div class="page-head">
         <div>
@@ -109,7 +106,6 @@
       </div>
 
       <div class="map-layout">
-        <!-- MAP CARD -->
         <section class="card">
           <div class="card-head">
             <div>
@@ -118,28 +114,54 @@
             </div>
           </div>
 
-          <!-- Floor buttons -->
           <div class="floor-tabs">
-            <button class="btn btn-ghost floor-btn active" data-floor="gf" type="button">TTS Ground Floor</button>
-            <button class="btn btn-ghost floor-btn" data-floor="l3" type="button">TTS Level 3</button>
-            <button class="btn btn-ghost floor-btn" data-floor="l4" type="button">TTS Level 4</button>
+            <button class="btn btn-ghost-light floor-btn active" data-floor="gf" type="button">TTS Ground Floor</button>
+            <button class="btn btn-ghost-light floor-btn" data-floor="l3" type="button">TTS Level 3</button>
+            <button class="btn btn-ghost-light floor-btn" data-floor="l4" type="button">TTS Level 4</button>
           </div>
 
-          <!-- Map image + pins -->
           <div class="map-frame" id="mapFrame">
-            <img id="floorMap" class="floor-map" src="images/tts-gf.png" alt="TTS Building Map" />
+            <img
+              id="floorMap"
+              class="floor-map"
+              src="images/tts-gf.png"
+              alt="TTS Building Map"
+            />
             <div class="map-pins" id="mapPins"></div>
-
-            <!-- Tooltip -->
             <div class="map-tooltip" id="mapTooltip" aria-hidden="true"></div>
           </div>
 
-          <div class="muted small map-hint">
-            Tip: Pins change color based on report volume (heat). Grey means no reports yet.
+          <div class="map-hint">
+            Tip: Pins change color based on report volume. Hover to preview and click to filter items.
+          </div>
+
+          <div class="heatmap-legend">
+            <div class="legend-title">Hotspot Heatmap</div>
+
+            <div class="legend-items">
+              <div class="legend-item">
+                <span class="legend-dot heat-none"></span>
+                No reports
+              </div>
+
+              <div class="legend-item">
+                <span class="legend-dot heat-low"></span>
+                Few reports
+              </div>
+
+              <div class="legend-item">
+                <span class="legend-dot heat-mid"></span>
+                Medium activity
+              </div>
+
+              <div class="legend-item">
+                <span class="legend-dot heat-high"></span>
+                High hotspot
+              </div>
+            </div>
           </div>
         </section>
 
-        <!-- LOCATIONS CARD -->
         <section class="card">
           <div class="card-head loc-head">
             <div class="card-title">Locations</div>

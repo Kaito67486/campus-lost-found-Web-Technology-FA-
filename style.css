@@ -1526,44 +1526,83 @@ body{
   .map-layout{ grid-template-columns: 1fr; }
 }
 
+/* Map card */
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  box-shadow:0 8px 22px rgba(0,0,0,0.05);
+  overflow:hidden;
+}
+
+.card-head{
+  padding:14px 16px;
+  border-bottom:1px solid #eef2f7;
+}
+
+.card-title{
+  font-size:16px;
+  font-weight:800;
+}
+
+.page-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:16px;
+}
+
+/* Floor buttons */
 .floor-tabs{
   display:flex;
   gap:10px;
-  margin:12px 0;
+  margin:12px 16px 16px;
   flex-wrap:wrap;
 }
 
-.floor-btn.active{
-  background:#EAF2FF;
-  color: var(--primary);
-  border-color:#D6E6FF;
+.floor-btn{
+  font-weight:700;
+  border-radius:12px;
 }
 
+.floor-btn.active{
+  background:#2563EB;
+  color:#fff;
+  border-color:#2563EB;
+  box-shadow:0 6px 16px rgba(37,99,235,.25);
+}
+
+/* Map area */
 .map-frame{
   position:relative;
-  border-radius: 16px;
+  margin:0 16px;
+  border-radius:16px;
   overflow:hidden;
   border:1px solid var(--border);
   background:#f8fafc;
-  min-height: 420px;
+  min-height:420px;
 }
 
 .floor-map{
   width:100%;
   height:auto;
   display:block;
+  max-height:620px;
+  object-fit:contain;
 }
 
+/* Pins */
 .map-pins{
   position:absolute;
   inset:0;
-  pointer-events:none; /* pins themselves enable pointer events */
+  pointer-events:none;
 }
 
 .map-pin{
   pointer-events:auto;
   position:absolute;
-  transform: translate(-50%, -50%);
+  transform:translate(-50%, -50%);
   border:0;
   background:transparent;
   cursor:pointer;
@@ -1571,60 +1610,115 @@ body{
   display:flex;
   align-items:center;
   gap:8px;
-  transition: transform .2s ease;
+  transition:transform .2s ease;
 }
 
 .map-pin:hover{
-  transform: translate(-50%, -50%) scale(1.06);
+  transform:translate(-50%, -50%) scale(1.08);
 }
 
 .pin-dot{
   width:14px;
   height:14px;
   border-radius:999px;
-  box-shadow: 0 0 0 6px rgba(37,99,235,.14);
-  border: 2px solid white;
+  border:2px solid #fff;
+  position:relative;
 }
 
 .pin-count{
-  min-width: 28px;
-  height: 22px;
+  min-width:28px;
+  height:22px;
   display:inline-flex;
   align-items:center;
   justify-content:center;
+  padding:0 8px;
+  border-radius:999px;
   font-size:12px;
   font-weight:800;
-  border-radius: 999px;
-  padding: 0 8px;
-  border: 1px solid rgba(0,0,0,.08);
-  background: rgba(255,255,255,.92);
+  color:#111827;
+  background:rgba(255,255,255,.94);
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow:0 6px 14px rgba(17,24,39,.08);
 }
 
-/* Heat levels */
-.map-pin.heat-none .pin-dot{ background:#94A3B8; box-shadow: 0 0 0 6px rgba(148,163,184,.16); }
-.map-pin.heat-low  .pin-dot{ background:#22C55E; box-shadow: 0 0 0 6px rgba(34,197,94,.18); }
-.map-pin.heat-mid  .pin-dot{ background:#F59E0B; box-shadow: 0 0 0 6px rgba(245,158,11,.18); }
-.map-pin.heat-high .pin-dot{ background:#EF4444; box-shadow: 0 0 0 6px rgba(239,68,68,.18); }
+/* Heat colors */
+.map-pin.heat-none .pin-dot{
+  background:#94A3B8;
+  box-shadow:0 0 0 6px rgba(148,163,184,.16);
+}
+
+.map-pin.heat-low .pin-dot{
+  background:#22C55E;
+  box-shadow:0 0 0 6px rgba(34,197,94,.18);
+}
+
+.map-pin.heat-mid .pin-dot{
+  background:#F59E0B;
+  box-shadow:0 0 0 6px rgba(245,158,11,.18);
+}
+
+.map-pin.heat-high .pin-dot{
+  background:#EF4444;
+  box-shadow:0 0 0 6px rgba(239,68,68,.18);
+}
+
+/* Pulsing hotspots */
+.map-pin.heat-low .pin-dot::after,
+.map-pin.heat-mid .pin-dot::after,
+.map-pin.heat-high .pin-dot::after{
+  content:"";
+  position:absolute;
+  inset:-6px;
+  border-radius:999px;
+  animation: pinPulse 1.8s ease-out infinite;
+}
+
+.map-pin.heat-low .pin-dot::after{
+  border:2px solid rgba(34,197,94,.40);
+}
+
+.map-pin.heat-mid .pin-dot::after{
+  border:2px solid rgba(245,158,11,.42);
+}
+
+.map-pin.heat-high .pin-dot::after{
+  border:2px solid rgba(239,68,68,.48);
+}
+
+@keyframes pinPulse{
+  0%{
+    transform:scale(.7);
+    opacity:.9;
+  }
+  70%{
+    transform:scale(1.8);
+    opacity:0;
+  }
+  100%{
+    transform:scale(1.8);
+    opacity:0;
+  }
+}
 
 /* Tooltip */
 .map-tooltip{
   position:absolute;
   z-index:5;
-  max-width: 260px;
+  max-width:260px;
   padding:10px 12px;
   border-radius:12px;
   border:1px solid rgba(0,0,0,.08);
-  background: rgba(255,255,255,.96);
-  box-shadow: 0 14px 30px rgba(17,24,39,.12);
+  background:rgba(255,255,255,.96);
+  box-shadow:0 14px 30px rgba(17,24,39,.12);
   opacity:0;
-  transform: translateY(4px);
-  transition: opacity .18s ease, transform .18s ease;
+  transform:translateY(4px);
+  transition:opacity .18s ease, transform .18s ease;
   pointer-events:none;
 }
 
 .map-tooltip.show{
   opacity:1;
-  transform: translateY(0);
+  transform:translateY(0);
 }
 
 .tt-title{
@@ -1634,21 +1728,63 @@ body{
 
 .tt-sub{
   font-size:12px;
-  color: var(--muted);
+  color:var(--muted);
   margin-bottom:6px;
 }
 
 .tt-hint{
   font-size:12px;
   font-weight:800;
-  color: var(--primary);
+  color:var(--primary);
 }
 
 .map-hint{
-  padding-top: 10px;
+  padding:12px 16px 0;
+  font-size:13px;
+  color:var(--muted);
 }
 
-/* Locations list styling (clean, consistent) */
+/* Heatmap legend */
+.heatmap-legend{
+  margin:14px 16px 16px;
+  padding:10px 14px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:#fafcff;
+}
+
+.legend-title{
+  font-weight:700;
+  font-size:13px;
+  margin-bottom:6px;
+}
+
+.legend-items{
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+  font-size:12px;
+}
+
+.legend-item{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.legend-dot{
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  display:inline-block;
+}
+
+.legend-dot.heat-none{ background:#94A3B8; }
+.legend-dot.heat-low{ background:#22C55E; }
+.legend-dot.heat-mid{ background:#F59E0B; }
+.legend-dot.heat-high{ background:#EF4444; }
+
+/* Locations panel */
 .loc-head{
   display:flex;
   justify-content:space-between;
@@ -1659,7 +1795,7 @@ body{
   display:flex;
   flex-direction:column;
   gap:10px;
-  padding: 12px 14px;
+  padding:12px 14px;
 }
 
 .loc-row{
@@ -1679,12 +1815,12 @@ body{
   border:1px solid var(--border);
   border-radius:12px;
   background:#fff;
-  transition: transform .18s ease, box-shadow .18s ease;
+  transition:transform .18s ease, box-shadow .18s ease;
 }
 
 .loc-item:hover{
-  transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(17,24,39,.08);
+  transform:translateY(-1px);
+  box-shadow:0 10px 22px rgba(17,24,39,.08);
 }
 
 .loc-left{
@@ -1702,6 +1838,9 @@ body{
 .loc-icon svg{
   width:18px;
   height:18px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
 }
 
 .loc-title{
