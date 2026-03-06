@@ -2303,15 +2303,42 @@ body{
 
 }
 
-/* Back button */
+/* Delete button */
+.btn-danger{
+  background:#fff1f2;
+  color:#dc2626;
+  border:1px solid #fecdd3;
+  font-weight:800;
+  transition:all .25s ease;
+}
 
+.btn-danger:hover{
+  background:#ffe4e6;
+  border-color:#fda4af;
+  transform:translateY(-2px);
+  box-shadow:0 10px 20px rgba(220,38,38,.10);
+}
+
+.btn-danger:active{
+  transform:translateY(0) scale(.98);
+}
+
+/* Back button */
 .btn-back{
-  background:#f1f5f9;
-  color:#1e293b;
-  border:1px solid #e2e8f0;
-  
+  background:#f8fafc;
+  color:#334155;
+  border:1px solid #cbd5e1;
+  font-weight:800;
+  transition:all .25s ease;
 }
 
 .btn-back:hover{
-  background:#e2e8f0;
+  background:#eef2f7;
+  border-color:#94a3b8;
+  transform:translateY(-2px);
+  box-shadow:0 10px 20px rgba(51,65,85,.08);
+}
+
+.btn-back:active{
+  transform:translateY(0) scale(.98);
 }
