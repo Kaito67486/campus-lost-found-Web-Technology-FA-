@@ -6,8 +6,8 @@
   <title>Item Details | Campus Lost &amp; Found</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body class="page">
+
   <!-- TOP BAR -->
   <header class="topbar">
     <div class="topbar-left">
@@ -100,85 +100,56 @@
 
     <!-- MAIN -->
     <main class="main">
-      <div class="page-head details-page-head">
+      <div class="page-head">
         <div>
           <h1 class="page-title">Item Details</h1>
           <p class="muted">View full details. Owners can edit, change status, or delete.</p>
         </div>
       </div>
 
-      <section class="card details-shell" id="detailCard">
-        <div id="loading" class="muted details-loading">Loading item...</div>
+      <section class="details-layout-card">
 
-        <div id="errorState" class="empty" style="display:none;">
-          <h3 style="margin-bottom:8px;">Item not found</h3>
-          <p class="muted">The item may have been deleted or the link is invalid.</p>
+        <!-- LEFT: PHOTO -->
+        <div class="details-photo-panel">
+          <span class="details-photo-status">Active</span>
+
+          <img
+            id="itemPhoto"
+            class="details-photo"
+            src="/images/placeholder.png"
+            alt="Item photo"
+          />
         </div>
 
-        <div id="detailContent" style="display:none;">
-          <div class="details-grid">
+        <!-- RIGHT: INFO -->
+        <div class="details-info-panel">
+          <h2 id="itemTitle" class="details-main-title">iphone</h2>
 
-            <!-- LEFT: IMAGE -->
-            <div class="details-media-card">
-              <img
-                id="itemPhoto"
-                class="details-image"
-                alt="Item photo"
-                style="display:none;"
-              />
+          <div class="details-main-status">Active</div>
 
-              <div id="itemPhotoFallback" class="details-image-fallback">
-                <img src="/images/placeholder.png" alt="No image available" class="details-placeholder" />
-              </div>
-            </div>
+          <div class="details-divider"></div>
 
-            <!-- RIGHT: CONTENT -->
-            <div class="details-info-card">
-              <div class="details-topbar">
-                <div class="details-badges">
-                  <span class="badge" id="refCode"></span>
-                  <span class="details-status-pill" id="itemStatus"></span>
-                </div>
+          <div class="details-info-list">
+            <div><span class="details-label">Category:</span> <span id="itemCategory">Lost</span></div>
+            <div><span class="details-label">Location:</span> <span id="itemLocation">TTS L4</span></div>
+            <div><span class="details-label">Date:</span> <span id="itemDate">2026-03-04</span></div>
+            <div><span class="details-label">Contact:</span> <span id="itemContact">0187...</span></div>
+          </div>
 
-                <div class="muted small" id="itemMetaTop"></div>
-              </div>
+          <div class="details-section-space"></div>
 
-              <h2 id="itemTitle" class="details-title"></h2>
+          <h3 class="details-subtitle">Description</h3>
 
-              <div class="details-meta-grid">
-                <div class="details-meta-box">
-                  <div class="details-label">Category</div>
-                  <div id="itemCategory"></div>
-                </div>
+          <div class="details-divider"></div>
 
-                <div class="details-meta-box">
-                  <div class="details-label">Location</div>
-                  <div id="itemLocation"></div>
-                </div>
+          <div id="itemDescription" class="details-description-text">
+            Item description
+          </div>
 
-                <div class="details-meta-box">
-                  <div class="details-label">Date</div>
-                  <div id="itemDate"></div>
-                </div>
-
-                <div class="details-meta-box">
-                  <div class="details-label">Contact</div>
-                  <div id="itemContact"></div>
-                </div>
-              </div>
-
-              <div class="details-section">
-                <div class="details-label">Description</div>
-                <div id="itemDescription" class="details-description"></div>
-              </div>
-
-              <div id="ownerActions" class="details-actions" style="display:none;">
-                <a id="btnEdit" class="btn btn-primary" href="#">Edit</a>
-                <button id="btnToggleStatus" class="btn btn-ghost-light" type="button">Change Status</button>
-                <button id="btnDelete" class="btn btn-danger" type="button">Delete</button>
-              </div>
-            </div>
-
+          <div class="details-actions">
+            <a id="btnEdit" class="btn btn-primary" href="#">Edit</a>
+            <button id="btnToggleStatus" class="btn btn-ghost-light" type="button">Change Status</button>
+            <button id="btnDelete" class="btn btn-danger" type="button">Delete</button>
           </div>
         </div>
       </section>

@@ -1,6 +1,9 @@
-// details.js - clean details page + owner actions + sidebar highlight
+// details.js - polished details page + owner actions + image status badge
 
 document.addEventListener("DOMContentLoaded", () => {
+  // page transition
+  document.body.classList.add("page-ready");
+
   // footer year
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -15,17 +18,22 @@ document.addEventListener("DOMContentLoaded", () => {
   // load item by id
   const qs = new URLSearchParams(window.location.search);
   const id = qs.get("id");
-  if (!id) return showError();
+  if (!id) {
+    showError();
+    return;
+  }
 
-  ensureLoggedIn(); // sets welcome text (doesn't block UI)
+  ensureLoggedIn();
   loadItem(id);
 });
 
 async function ensureLoggedIn() {
   const welcomeText = document.getElementById("welcomeText");
+
   try {
     const res = await fetch("/api/auth/me", { credentials: "include" });
-    if (res.status === 401) return; // allow viewing without login if you want
+    if (res.status === 401) return;
+
     const data = await res.json().catch(() => ({}));
     if (data?.ok && data?.user?.name && welcomeText) {
       welcomeText.textContent = `Welcome, ${data.user.name} 👋`;
@@ -40,6 +48,7 @@ async function loadItem(id) {
     const res = await fetch(`/api/items/${encodeURIComponent(id)}`, {
       credentials: "include",
     });
+
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok || !data.ok || !data.item) {
@@ -64,68 +73,112 @@ function renderItem(item) {
   if (errorState) errorState.style.display = "none";
   if (detailContent) detailContent.style.display = "block";
 
+  // main fields
   const ref = document.getElementById("refCode");
-  const status = document.getElementById("itemStatus");
+  const statusTop = document.getElementById("itemStatus");
+  const photoStatus = document.querySelector(".details-photo-status");
   const title = document.getElementById("itemTitle");
   const metaTop = document.getElementById("itemMetaTop");
   const desc = document.getElementById("itemDescription");
   const contact = document.getElementById("itemContact");
-
   const categoryEl = document.getElementById("itemCategory");
   const locationEl = document.getElementById("itemLocation");
   const dateEl = document.getElementById("itemDate");
 
-  if (ref) ref.textContent = item.referenceCode || "";
-  if (title) title.textContent = item.title || "";
-  if (desc) desc.textContent = item.description || "";
-  if (contact) contact.textContent = item.contact || "";
-  if (categoryEl) categoryEl.textContent = item.category || "-";
-  if (locationEl) locationEl.textContent = item.location || "-";
-  if (dateEl) dateEl.textContent = (item.date || "").slice(0, 10) || "-";
+  const titleText = item.title || "Untitled";
+  const categoryText = item.category || "-";
+  const locationText = item.location || "-";
+  const dateText = (item.date || "").slice(0, 10) || "-";
+  const contactText = item.contact || "-";
+  const descriptionText = item.description || "-";
+  const referenceText = item.referenceCode || "";
+  const statusText = item.status || "Active";
 
-  if (status) {
-    const rawStatus = item.status || "Active";
-    status.textContent = rawStatus;
-    status.className = "details-status-pill";
-
-    const statusKey = rawStatus.toLowerCase();
-    if (statusKey === "active") status.classList.add("status-active");
-    else if (statusKey === "claimed") status.classList.add("status-claimed");
-    else if (statusKey === "resolved") status.classList.add("status-resolved");
+  if (ref) {
+    ref.textContent = referenceText;
+    ref.className = `badge ${String(categoryText).toLowerCase() === "found" ? "found" : "lost"}`;
   }
 
-  const meta = [
-    item.category || "",
-    item.location || "",
-    (item.date || "").slice(0, 10),
-  ].filter(Boolean).join(" • ");
+  if (title) title.textContent = titleText;
+  if (desc) desc.textContent = descriptionText;
+  if (contact) contact.textContent = contactText;
+  if (categoryEl) categoryEl.textContent = categoryText;
+  if (locationEl) locationEl.textContent = locationText;
+  if (dateEl) dateEl.textContent = dateText;
 
+  // top-right meta text
+  const meta = [categoryText, locationText, dateText].filter(Boolean).join(" • ");
   if (metaTop) metaTop.textContent = meta;
 
+  // right-panel status
+  if (statusTop) statusTop.textContent = statusText;
+
+  // image corner badge
+if (photoStatus) {
+  const s = String(statusText).toLowerCase();
+  const c = String(categoryText).toLowerCase();
+
+  photoStatus.textContent = `${categoryText} • ${statusText}`;
+
+  // default
+  photoStatus.style.background = "#eef2ff";
+  photoStatus.style.color = "#1d4ed8";
+  photoStatus.style.borderColor = "#dbe7ff";
+  photoStatus.style.boxShadow = "0 8px 18px rgba(37,99,235,.12)";
+
+  // category color base
+  if (c === "lost") {
+    photoStatus.style.background = "#fef2f2";
+    photoStatus.style.color = "#b91c1c";
+    photoStatus.style.borderColor = "#fecaca";
+    photoStatus.style.boxShadow = "0 8px 18px rgba(185,28,28,.12)";
+  } else if (c === "found") {
+    photoStatus.style.background = "#ecfdf3";
+    photoStatus.style.color = "#15803d";
+    photoStatus.style.borderColor = "#bbf7d0";
+    photoStatus.style.boxShadow = "0 8px 18px rgba(21,128,61,.12)";
+  }
+
+  // status override / refine
+  if (s === "claimed") {
+    photoStatus.style.background = "#fff7ed";
+    photoStatus.style.color = "#c2410c";
+    photoStatus.style.borderColor = "#fed7aa";
+    photoStatus.style.boxShadow = "0 8px 18px rgba(194,65,12,.12)";
+  } else if (s === "resolved") {
+    photoStatus.style.background = "#f3f4f6";
+    photoStatus.style.color = "#374151";
+    photoStatus.style.borderColor = "#e5e7eb";
+    photoStatus.style.boxShadow = "0 8px 18px rgba(55,65,81,.10)";
+  }
+}
   // photo + fallback
   const photoEl = document.getElementById("itemPhoto");
-  const photoFallback = document.getElementById("itemPhotoFallback");
+  const fallbackEl = document.getElementById("itemPhotoFallback");
 
-  if (photoEl && photoFallback) {
+  if (photoEl && fallbackEl) {
     if (item.imagePath) {
       photoEl.src = item.imagePath;
       photoEl.style.display = "block";
-      photoFallback.style.display = "none";
+      fallbackEl.style.display = "none";
 
       photoEl.onerror = () => {
         photoEl.style.display = "none";
-        photoFallback.style.display = "flex";
+        photoEl.removeAttribute("src");
+        fallbackEl.style.display = "flex";
       };
     } else {
       photoEl.style.display = "none";
       photoEl.removeAttribute("src");
-      photoFallback.style.display = "flex";
+      fallbackEl.style.display = "flex";
     }
   }
 
+  // edit link
   const btnEdit = document.getElementById("btnEdit");
   if (btnEdit) btnEdit.href = `report.html?id=${encodeURIComponent(item.id)}`;
 
+  // owner actions
   const btnToggle = document.getElementById("btnToggleStatus");
   if (btnToggle) {
     btnToggle.onclick = () => toggleStatus(item);
@@ -146,9 +199,9 @@ async function checkOwnership(item) {
     if (!res.ok || !data.ok || !data.user) return;
 
     const ownerId = item.ownerUserId ?? item.owner_user_id;
-    if (ownerId && data.user.id === ownerId) {
+    if (ownerId && Number(data.user.id) === Number(ownerId)) {
       const actions = document.getElementById("ownerActions");
-      if (actions) actions.style.display = "block";
+      if (actions) actions.style.display = "flex";
     }
   } catch {
     // ignore
@@ -158,9 +211,11 @@ async function checkOwnership(item) {
 async function toggleStatus(item) {
   const current = item.status || "Active";
   const next =
-    current === "Active" ? "Claimed" :
-    current === "Claimed" ? "Resolved" :
-    "Active";
+    current === "Active"
+      ? "Claimed"
+      : current === "Claimed"
+      ? "Resolved"
+      : "Active";
 
   try {
     const res = await fetch(`/api/items/${encodeURIComponent(item.id)}/status`, {
@@ -173,7 +228,6 @@ async function toggleStatus(item) {
     const data = await res.json().catch(() => ({}));
     if (!res.ok || !data.ok) throw new Error(data.msg || "Failed to update status");
 
-    // simplest: reload to reflect new status
     window.location.reload();
   } catch (err) {
     alert(err.message);
@@ -210,7 +264,10 @@ function showError() {
 
 async function logout() {
   try {
-    await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
+    await fetch("/api/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
   } catch {
     // ignore
   }
