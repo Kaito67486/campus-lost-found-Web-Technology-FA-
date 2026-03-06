@@ -154,25 +154,18 @@ if (photoStatus) {
 }
   // photo + fallback
   const photoEl = document.getElementById("itemPhoto");
-  const fallbackEl = document.getElementById("itemPhotoFallback");
 
-  if (photoEl && fallbackEl) {
-    if (item.imagePath) {
-      photoEl.src = item.imagePath;
-      photoEl.style.display = "block";
-      fallbackEl.style.display = "none";
-
-      photoEl.onerror = () => {
-        photoEl.style.display = "none";
-        photoEl.removeAttribute("src");
-        fallbackEl.style.display = "flex";
-      };
-    } else {
-      photoEl.style.display = "none";
-      photoEl.removeAttribute("src");
-      fallbackEl.style.display = "flex";
-    }
+if (photoEl) {
+  if (item.imagePath) {
+    photoEl.src = item.imagePath;
+  } else {
+    photoEl.src = "https://via.placeholder.com/600x400?text=No+Image";
   }
+
+  photoEl.onerror = () => {
+    photoEl.src = "https://via.placeholder.com/600x400?text=No+Image";
+  };
+}
 
   // edit link
   const btnEdit = document.getElementById("btnEdit");

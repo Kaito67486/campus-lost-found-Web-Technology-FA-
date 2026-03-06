@@ -1860,7 +1860,7 @@ body{
 }
 
 /* =========================
-   DETAILS PAGE - SPLIT LAYOUT
+   DETAILS PAGE -
 ========================= */
 
 .details-layout-card{
@@ -1922,6 +1922,25 @@ body{
   flex-direction:column;
   justify-content:flex-start;
   padding-top:6px;
+}
+
+.details-header{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.btn-back{
+  border:none;
+  background:#f1f5f9;
+  padding:8px 14px;
+  border-radius:10px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.btn-back:hover{
+  background:#e2e8f0;
 }
 
 .details-main-title{
