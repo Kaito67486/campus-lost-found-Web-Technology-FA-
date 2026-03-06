@@ -1,10 +1,10 @@
-// settings.js - Profile + Password + Logout (safe even if backend endpoints are missing)
+// settings.js
+// Handles profile update and password change
 
 document.addEventListener("DOMContentLoaded", () => {
+
   const welcomeText = document.getElementById("welcomeText");
   const btnLogout = document.getElementById("btnLogout");
-  const btnLogout2 = document.getElementById("btnLogout2");
-
   const toast = document.getElementById("toast");
 
   const profileForm = document.getElementById("profileForm");
@@ -16,154 +16,265 @@ document.addEventListener("DOMContentLoaded", () => {
   const newPasswordEl = document.getElementById("newPassword");
   const confirmPasswordEl = document.getElementById("confirmPassword");
 
-  highlightSidebar();
-  ensureLoggedInAndLoadProfile();
 
-  btnLogout?.addEventListener("click", logout);
-  btnLogout2?.addEventListener("click", logout);
+  highlightSidebar();
+  loadCurrentUser();
+
+
+  /* ======================
+     LOGOUT
+  ====================== */
+
+  btnLogout?.addEventListener("click", async () => {
+
+    try {
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include"
+      });
+    } catch (e) {}
+
+    window.location.href = "login.html";
+  });
+
+
+  /* ======================
+     UPDATE PROFILE
+  ====================== */
 
   profileForm?.addEventListener("submit", async (e) => {
+
     e.preventDefault();
 
-    const payload = {
-      name: (nameEl?.value || "").trim(),
-      email: (emailEl?.value || "").trim(),
-    };
+    const name = nameEl.value.trim();
+    const email = emailEl.value.trim();
 
-    if (!payload.name) return showToast("Please enter your name.", "error");
-    if (!payload.email) return showToast("Please enter your email.", "error");
 
-    // Try common endpoints (won't break if not implemented)
-    const attempts = [
-      { url: "/api/auth/profile", method: "PUT" },
-      { url: "/api/auth/profile", method: "POST" },
-      { url: "/api/auth/update-profile", method: "PUT" },
-      { url: "/api/auth/update-profile", method: "POST" },
-    ];
-
-    const ok = await tryAny(attempts, payload);
-
-    if (ok) {
-      showToast("Profile saved.", "success");
-      // refresh welcome text
-      ensureLoggedInAndLoadProfile(true);
-    } else {
-      showToast("Profile update endpoint not available on server yet.", "error");
+    if (!name) {
+      showToast("Please enter your name.", "error");
+      return;
     }
+
+    if (!email) {
+      showToast("Please enter your email.", "error");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      showToast("Only @qiu.edu.my email addresses are allowed.", "error");
+      return;
+    }
+
+
+    setFormBusy(profileForm, true);
+
+    try {
+
+      const res = await fetch("/api/auth/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          name,
+          email
+        })
+      });
+
+      const data = await safeJson(res);
+
+      if (!res.ok || data?.ok === false) {
+        throw new Error(data?.msg || "Profile update failed");
+      }
+
+      showToast("Profile updated successfully.", "success");
+
+      if (welcomeText) {
+        welcomeText.textContent = `Welcome, ${name} 👋`;
+      }
+
+    } catch (err) {
+
+      console.error(err);
+      showToast(err.message || "Could not update profile.", "error");
+
+    } finally {
+
+      setFormBusy(profileForm, false);
+
+    }
+
   });
+
+
+  /* ======================
+     CHANGE PASSWORD
+  ====================== */
 
   passwordForm?.addEventListener("submit", async (e) => {
+
     e.preventDefault();
 
-    const currentPassword = currentPasswordEl?.value || "";
-    const newPassword = newPasswordEl?.value || "";
-    const confirmPassword = confirmPasswordEl?.value || "";
+    const currentPassword = currentPasswordEl.value;
+    const newPassword = newPasswordEl.value;
+    const confirmPassword = confirmPasswordEl.value;
 
-    if (!currentPassword) return showToast("Enter current password.", "error");
-    if (newPassword.length < 6) return showToast("New password must be at least 6 characters.", "error");
-    if (newPassword !== confirmPassword) return showToast("Passwords do not match.", "error");
 
-    const payload = { currentPassword, newPassword };
-
-    const attempts = [
-      { url: "/api/auth/password", method: "PUT" },
-      { url: "/api/auth/change-password", method: "PUT" },
-      { url: "/api/auth/change-password", method: "POST" },
-    ];
-
-    const ok = await tryAny(attempts, payload);
-
-    if (ok) {
-      showToast("Password updated.", "success");
-      passwordForm.reset();
-    } else {
-      showToast("Password update endpoint not available on server yet.", "error");
+    if (!currentPassword) {
+      showToast("Please enter your current password.", "error");
+      return;
     }
+
+    if (newPassword.length < 6) {
+      showToast("Password must be at least 6 characters.", "error");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      showToast("Passwords do not match.", "error");
+      return;
+    }
+
+
+    setFormBusy(passwordForm, true);
+
+    try {
+
+      const res = await fetch("/api/auth/change-password", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          currentPassword,
+          newPassword
+        })
+      });
+
+      const data = await safeJson(res);
+
+      if (!res.ok || data?.ok === false) {
+        throw new Error(data?.msg || "Password update failed");
+      }
+
+      showToast("Password updated successfully.", "success");
+
+      passwordForm.reset();
+
+    } catch (err) {
+
+      console.error(err);
+      showToast(err.message || "Could not update password.", "error");
+
+    } finally {
+
+      setFormBusy(passwordForm, false);
+
+    }
+
   });
 
-  async function ensureLoggedInAndLoadProfile(silent = false) {
+
+  /* ======================
+     LOAD CURRENT USER
+  ====================== */
+
+  async function loadCurrentUser() {
+
     try {
-      const res = await fetch("/api/auth/me", { credentials: "include" });
+
+      const res = await fetch("/api/auth/me", {
+        credentials: "include"
+      });
+
       if (res.status === 401) {
         window.location.href = "login.html";
         return;
       }
 
-      const data = await res.json();
+      const data = await safeJson(res);
 
-      if (data?.ok && data?.user) {
-        const name = data.user.name || "";
-        const email = data.user.email || "";
+      if (!data?.user) return;
 
-        if (welcomeText) {
-          welcomeText.textContent = name ? `Welcome, ${name} 👋` : "Welcome 👋";
-        }
+      const user = data.user;
 
-        if (nameEl) nameEl.value = name;
-        if (emailEl) emailEl.value = email;
+      nameEl.value = user.name || "";
+      emailEl.value = user.email || "";
 
-        if (!silent) showToast("Loaded your account info.", "success");
+      if (welcomeText) {
+        welcomeText.textContent = user.name
+          ? `Welcome, ${user.name} 👋`
+          : "Welcome 👋";
       }
+
     } catch (err) {
-      console.error("AUTH ME ERROR:", err);
-      if (!silent) showToast("Could not load user info (server error).", "error");
+
+      console.error("Load user error:", err);
+
     }
+
   }
 
-  async function logout() {
-    try {
-      await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
-    } catch (_) {
-      // ignore
-    }
-    window.location.href = "login.html";
+
+  /* ======================
+     UTILITIES
+  ====================== */
+
+  function isValidEmail(email) {
+    return /^[a-zA-Z0-9._%+-]+@qiu\.edu\.my$/.test(email);
   }
 
-  function highlightSidebar() {
-    const current = location.pathname.split("/").pop().split("?")[0];
-    document.querySelectorAll(".side-nav .side-link").forEach((a) => {
-      a.classList.toggle("active", a.getAttribute("href") === current);
-    });
-  }
 
-  function showToast(message, type) {
+  function showToast(message, type = "success") {
+
     if (!toast) return;
+
     toast.style.display = "block";
-    toast.className = `toast ${type === "success" ? "success" : "error"}`;
+    toast.className = `toast ${type}`;
     toast.textContent = message;
 
-    clearTimeout(showToast._t);
-    showToast._t = setTimeout(() => {
+    setTimeout(() => {
       toast.style.display = "none";
     }, 3000);
   }
 
-  async function tryAny(attempts, payload) {
-    for (const a of attempts) {
-      try {
-        const res = await fetch(a.url, {
-          method: a.method,
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify(payload),
-        });
 
-        // If endpoint exists and returns ok, accept it
-        const ct = res.headers.get("content-type") || "";
-        const data = ct.includes("application/json") ? await res.json().catch(() => null) : null;
+  function setFormBusy(form, busy) {
 
-        if (res.ok && (data?.ok === undefined || data?.ok === true)) return true;
+    const controls = form.querySelectorAll("input, button");
 
-        // If 404, try next endpoint
-        if (res.status === 404) continue;
+    controls.forEach(el => {
+      el.disabled = busy;
+    });
 
-        // If endpoint exists but returns error, stop early
-        return false;
-      } catch (err) {
-        // network error -> try next
-        continue;
-      }
-    }
-    return false;
   }
+
+
+  function highlightSidebar() {
+
+    const current = location.pathname.split("/").pop();
+
+    document.querySelectorAll(".side-link").forEach(link => {
+
+      if (link.getAttribute("href") === current) {
+        link.classList.add("active");
+      }
+
+    });
+
+  }
+
+
+  async function safeJson(res) {
+
+    try {
+      return await res.json();
+    } catch {
+      return null;
+    }
+
+  }
+
 });
