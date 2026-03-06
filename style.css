@@ -2023,3 +2023,204 @@ body{
     max-width:100%;
   }
 }
+
+/* =========================
+   MY REPORTS - POLISHED UI
+========================= */
+
+.myreports-head{
+  margin-bottom: 14px;
+}
+
+.myreports-stats{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.myreports-stat-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:16px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.04);
+}
+
+.myreports-stat-label{
+  font-size:13px;
+  color:#64748b;
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.myreports-stat-value{
+  font-size:28px;
+  font-weight:900;
+  color:#0f172a;
+}
+
+.myreports-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap:18px;
+}
+
+.myreports-loading{
+  padding:12px 2px;
+}
+
+.my-card{
+  position:relative;
+  background:#fff;
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid #e8edf5;
+  transition:all .25s ease;
+  box-shadow:0 4px 12px rgba(0,0,0,0.04);
+}
+
+.my-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 16px 34px rgba(0,0,0,0.08);
+}
+
+.my-card-media-wrap{
+  position:relative;
+}
+
+.my-card .item-img{
+  width:100%;
+  height:190px;
+  object-fit:cover;
+  background:#eef3fb;
+  display:block;
+}
+
+.my-card-category-badge{
+  position:absolute;
+  top:12px;
+  left:12px;
+  padding:6px 12px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:800;
+  color:#fff;
+  box-shadow:0 8px 18px rgba(0,0,0,0.10);
+}
+
+.my-card-category-badge.lost{
+  background:#ef4444;
+}
+
+.my-card-category-badge.found{
+  background:#22c55e;
+}
+
+.my-card-body{
+  padding:16px 18px 18px;
+}
+
+.my-card-topline{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+}
+
+.my-card-title{
+  font-size:22px;
+  font-weight:900;
+  color:#0f172a;
+  margin-bottom:4px;
+  word-break:break-word;
+}
+
+.my-card-meta{
+  font-size:15px;
+  color:#64748b;
+}
+
+.badge-status{
+  font-size:12px;
+  padding:5px 10px;
+  border-radius:999px;
+  font-weight:800;
+  display:inline-flex;
+  align-items:center;
+}
+
+.badge-status.active{
+  background:#ecfdf5;
+  color:#047857;
+}
+
+.badge-status.claimed{
+  background:#fff7ed;
+  color:#c2410c;
+}
+
+.badge-status.resolved{
+  background:#f1f5f9;
+  color:#475569;
+}
+
+.my-actions{
+  display:flex;
+  gap:10px;
+  margin-top:16px;
+  flex-wrap:wrap;
+}
+
+.btn-view{
+  background:#f1f5f9;
+  color:#1e293b;
+  border:1px solid #e2e8f0;
+}
+
+.btn-view:hover{
+  background:#e2e8f0;
+}
+
+.btn-edit{
+  min-width:74px;
+}
+
+.btn-del{
+  background:#fff5f5;
+  color:#dc2626;
+  border:1px solid #fecaca;
+}
+
+.btn-del:hover{
+  background:#fee2e2;
+}
+
+.myreports-empty{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:12px;
+  max-width:420px;
+}
+
+@media (max-width: 980px){
+  .myreports-stats{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px){
+  .myreports-stats{
+    grid-template-columns: 1fr;
+  }
+
+  .myreports-grid{
+    grid-template-columns: 1fr;
+  }
+
+  .my-card .item-img{
+    height:180px;
+  }
+}

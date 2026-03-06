@@ -1,11 +1,16 @@
-// myreports.js - show ONLY logged-in user's items; View (details) + Edit (report) + optional Delete
+// myreports.js - polished My Reports page
 
 document.addEventListener("DOMContentLoaded", () => {
+  document.body.classList.add("page-ready");
+
   const grid = document.getElementById("grid");
   const emptyState = document.getElementById("emptyState");
   const resultCount = document.getElementById("resultCount");
   const welcomeText = document.getElementById("welcomeText");
   const btnLogout = document.getElementById("btnLogout");
+
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   highlightSidebar();
   init();
@@ -25,12 +30,13 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "login.html";
         return null;
       }
+
       const data = await res.json();
       if (data?.ok && data?.user) {
         if (welcomeText && data.user.name) {
           welcomeText.textContent = `Welcome, ${data.user.name} 👋`;
         }
-        return data.user; // {id, name, ...}
+        return data.user;
       }
       return null;
     } catch (err) {
@@ -42,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function loadMyItems(userId) {
     if (!grid) return;
 
-    grid.innerHTML = `<div class="muted" style="padding:10px 0;">Loading...</div>`;
+    grid.innerHTML = `<div class="muted myreports-loading">Loading your reports...</div>`;
     if (emptyState) emptyState.style.display = "none";
     if (resultCount) resultCount.textContent = "";
 
@@ -56,12 +62,26 @@ document.addEventListener("DOMContentLoaded", () => {
         .filter((it) => Number(it.ownerUserId) === Number(userId))
         .sort((a, b) => (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0));
 
+      renderStats(mine);
       render(mine);
     } catch (err) {
       console.error("LOAD MY REPORTS ERROR:", err);
-      grid.innerHTML = `<div class="muted" style="padding:10px 0;">${escapeHtml(err.message || "Error loading items.")}</div>`;
+      grid.innerHTML = `<div class="muted myreports-loading">${escapeHtml(err.message || "Error loading items.")}</div>`;
       if (resultCount) resultCount.textContent = "0 items";
+      renderStats([]);
     }
+  }
+
+  function renderStats(items) {
+    const total = items.length;
+    const lost = items.filter(i => String(i.category || "").toLowerCase() === "lost").length;
+    const found = items.filter(i => String(i.category || "").toLowerCase() === "found").length;
+    const active = items.filter(i => String(i.status || "").toLowerCase() === "active").length;
+
+    setText("statTotalReports", total);
+    setText("statLostReports", lost);
+    setText("statFoundReports", found);
+    setText("statActiveReports", active);
   }
 
   function render(items) {
@@ -81,49 +101,53 @@ document.addEventListener("DOMContentLoaded", () => {
       const title = item.title || "Untitled";
       const location = item.location || "Unknown location";
       const whenText = item.createdAt ? timeAgo(Number(item.createdAt)) : (item.date || "");
-      const cat = (item.category || "").toLowerCase(); // lost/found
-      const status = (item.status || "Active").toLowerCase(); // active/claimed/resolved
+      const cat = String(item.category || "").toLowerCase();
+      const status = String(item.status || "Active").toLowerCase();
 
       const catClass = cat === "found" ? "found" : "lost";
       const statusClass =
-        status === "claimed" ? "claimed" : status === "resolved" ? "resolved" : "active";
+        status === "claimed" ? "claimed" :
+        status === "resolved" ? "resolved" : "active";
 
       const media = item.imagePath
         ? `<img class="item-img" src="${escapeAttr(item.imagePath)}" alt="${escapeAttr(title)}">`
-        : `<div class="item-img"></div>`;
+        : `<img class="item-img" src="/images/placeholder.png" alt="No image available">`;
 
       return `
-        <div class="item-card my-card" data-id="${escapeAttr(item.id)}" role="button" tabindex="0">
-          ${media}
+        <article class="item-card my-card" data-id="${escapeAttr(item.id)}" role="button" tabindex="0">
+          <div class="my-card-media-wrap">
+            ${media}
+            <span class="my-card-category-badge ${catClass}">
+              ${escapeHtml(item.category || (catClass === "found" ? "Found" : "Lost"))}
+            </span>
+          </div>
 
-          <div class="item-body">
-            <div class="item-top" style="display:flex; gap:8px; align-items:center; justify-content:space-between;">
-              <div style="display:flex; gap:8px; align-items:center;">
-                <span class="badge ${catClass}">${escapeHtml(item.category || (catClass === "found" ? "Found" : "Lost"))}</span>
-                <span class="badge-status ${statusClass}">${escapeHtml(item.status || "Active")}</span>
-              </div>
+          <div class="item-body my-card-body">
+            <div class="my-card-topline">
+              <span class="badge-status ${statusClass}">
+                ${escapeHtml(item.status || "Active")}
+              </span>
               <span class="muted small">${escapeHtml(whenText)}</span>
             </div>
 
-            <div class="item-title" style="margin-top:10px;">${escapeHtml(title)}</div>
-            <div class="item-meta">${escapeHtml(location)}</div>
+            <div class="item-title my-card-title">${escapeHtml(title)}</div>
+            <div class="item-meta my-card-meta">${escapeHtml(location)}</div>
 
-            <div class="my-actions" style="display:flex; gap:10px; margin-top:12px;">
-              <button class="btn btn-light btn-view" type="button" data-action="view" data-id="${escapeAttr(item.id)}">View</button>
+            <div class="my-actions">
+              <button class="btn btn-view" type="button" data-action="view" data-id="${escapeAttr(item.id)}">View</button>
               <button class="btn btn-primary btn-edit" type="button" data-action="edit" data-id="${escapeAttr(item.id)}">Edit</button>
-              <button class="btn btn-ghost btn-del" type="button" data-action="delete" data-id="${escapeAttr(item.id)}">Delete</button>
+              <button class="btn btn-del" type="button" data-action="delete" data-id="${escapeAttr(item.id)}">Delete</button>
             </div>
           </div>
-        </div>
+        </article>
       `;
     }).join("");
 
-    // Card click -> view/manage details
     grid.querySelectorAll(".my-card").forEach((card) => {
       card.addEventListener("click", (e) => {
-        // If clicked a button, let button handler handle it
         const btn = e.target.closest("button[data-action]");
         if (btn) return;
+
         const id = card.getAttribute("data-id");
         if (!id) return;
         window.location.href = `details.html?id=${encodeURIComponent(id)}`;
@@ -139,10 +163,10 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // Button actions
     grid.querySelectorAll("button[data-action]").forEach((btn) => {
       btn.addEventListener("click", async (e) => {
         e.stopPropagation();
+
         const action = btn.getAttribute("data-action");
         const id = btn.getAttribute("data-id");
         if (!id) return;
@@ -151,10 +175,12 @@ document.addEventListener("DOMContentLoaded", () => {
           window.location.href = `details.html?id=${encodeURIComponent(id)}`;
           return;
         }
+
         if (action === "edit") {
           window.location.href = `report.html?id=${encodeURIComponent(id)}`;
           return;
         }
+
         if (action === "delete") {
           const ok = confirm("Delete this report? This cannot be undone.");
           if (!ok) return;
@@ -164,23 +190,50 @@ document.addEventListener("DOMContentLoaded", () => {
               method: "DELETE",
               credentials: "include",
             });
-            const data = await res.json().catch(() => ({}));
-            if (!res.ok || data.ok === false) throw new Error(data.msg || "Delete failed");
 
-            // Remove card instantly
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok || data.ok === false) {
+              throw new Error(data.msg || "Delete failed");
+            }
+
             const card = grid.querySelector(`.my-card[data-id="${CSS.escape(id)}"]`);
             card?.remove();
 
-            // Update count
-            const remaining = grid.querySelectorAll(".my-card").length;
-            if (resultCount) resultCount.textContent = `${remaining} item${remaining === 1 ? "" : "s"}`;
-            if (remaining === 0 && emptyState) emptyState.style.display = "block";
+            const remainingCards = grid.querySelectorAll(".my-card");
+            const remaining = remainingCards.length;
+
+            if (resultCount) {
+              resultCount.textContent = `${remaining} item${remaining === 1 ? "" : "s"}`;
+            }
+
+            const remainingItems = Array.from(remainingCards).map((el) => ({
+              category: el.querySelector(".my-card-category-badge")?.textContent?.trim() || "",
+              status: el.querySelector(".badge-status")?.textContent?.trim() || "",
+            }));
+
+            renderStatsFromDom(remainingItems);
+
+            if (remaining === 0 && emptyState) {
+              emptyState.style.display = "block";
+            }
           } catch (err) {
             alert(err.message || "Could not delete.");
           }
         }
       });
     });
+  }
+
+  function renderStatsFromDom(items) {
+    const total = items.length;
+    const lost = items.filter(i => String(i.category).toLowerCase() === "lost").length;
+    const found = items.filter(i => String(i.category).toLowerCase() === "found").length;
+    const active = items.filter(i => String(i.status).toLowerCase() === "active").length;
+
+    setText("statTotalReports", total);
+    setText("statLostReports", lost);
+    setText("statFoundReports", found);
+    setText("statActiveReports", active);
   }
 
   async function logout() {
@@ -209,6 +262,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (hr > 0) return `${hr} hour${hr === 1 ? "" : "s"} ago`;
     if (min > 0) return `${min} minute${min === 1 ? "" : "s"} ago`;
     return "just now";
+  }
+
+  function setText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = String(value);
   }
 
   function escapeHtml(s) {

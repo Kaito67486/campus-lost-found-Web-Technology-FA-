@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 
-<body>
+<body class="page">
   <!-- TOP BAR -->
   <header class="topbar">
     <div class="topbar-left">
@@ -20,11 +20,10 @@
 
     <div class="topbar-right">
       <span class="user-pill" id="welcomeText">Welcome 👋</span>
-      <button class="btn btn-ghost" id="btnLogout" type="button">Logout</button>
+      <button class="btn btn-ghost-dark" id="btnLogout" type="button">Logout</button>
     </div>
   </header>
 
-  <!-- APP GRID: SIDEBAR + MAIN -->
   <div class="app">
     <!-- SIDEBAR -->
     <aside class="sidebar">
@@ -101,22 +100,46 @@
 
     <!-- MAIN -->
     <main class="main">
-      <div class="page-head">
+      <div class="page-head myreports-head">
         <div>
           <h1 class="page-title">My Reports</h1>
-          <p class="muted">Only your submitted posts. Click a card to view/manage. Use Edit to update.</p>
+          <p class="muted">Manage the reports you created. Open a card to view details, edit, or remove it.</p>
         </div>
         <div class="muted" id="resultCount">0 items</div>
       </div>
 
-      <section id="grid" class="grid"></section>
+      <!-- summary cards -->
+      <section class="myreports-stats" id="myReportStats">
+        <div class="myreports-stat-card">
+          <div class="myreports-stat-label">Total Reports</div>
+          <div class="myreports-stat-value" id="statTotalReports">0</div>
+        </div>
 
-      <div id="emptyState" class="empty" style="display:none;">
-        <h3 style="margin-bottom:8px;">No reports yet</h3>
+        <div class="myreports-stat-card">
+          <div class="myreports-stat-label">Lost Reports</div>
+          <div class="myreports-stat-value" id="statLostReports">0</div>
+        </div>
+
+        <div class="myreports-stat-card">
+          <div class="myreports-stat-label">Found Reports</div>
+          <div class="myreports-stat-value" id="statFoundReports">0</div>
+        </div>
+
+        <div class="myreports-stat-card">
+          <div class="myreports-stat-label">Active</div>
+          <div class="myreports-stat-value" id="statActiveReports">0</div>
+        </div>
+      </section>
+
+      <section id="grid" class="grid myreports-grid"></section>
+
+      <div id="emptyState" class="empty myreports-empty" style="display:none;">
+        <h3>No reports yet</h3>
         <p class="muted">Create your first report from “Report Lost Item”.</p>
+        <a href="report.html" class="btn btn-primary">Create Report</a>
       </div>
 
-      <footer class="footer">© 2026 Campus Lost &amp; Found</footer>
+      <footer class="footer">© <span id="year"></span> Campus Lost &amp; Found</footer>
     </main>
   </div>
 
