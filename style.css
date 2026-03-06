@@ -2302,3 +2302,16 @@ body{
   }
 
 }
+
+/* Back button */
+
+.btn-back{
+  background:#f1f5f9;
+  color:#1e293b;
+  border:1px solid #e2e8f0;
+  
+}
+
+.btn-back:hover{
+  background:#e2e8f0;
+}
