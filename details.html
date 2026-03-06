@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 
-<body>
+<body class="page">
   <!-- TOP BAR -->
   <header class="topbar">
     <div class="topbar-left">
@@ -20,11 +20,10 @@
 
     <div class="topbar-right">
       <span class="user-pill" id="welcomeText">Welcome 👋</span>
-      <button class="btn btn-ghost" id="btnLogout" type="button">Logout</button>
+      <button class="btn btn-ghost-dark" id="btnLogout" type="button">Logout</button>
     </div>
   </header>
 
-  <!-- APP GRID: SIDEBAR + MAIN -->
   <div class="app">
     <!-- SIDEBAR -->
     <aside class="sidebar">
@@ -101,16 +100,15 @@
 
     <!-- MAIN -->
     <main class="main">
-      <div class="page-head">
+      <div class="page-head details-page-head">
         <div>
           <h1 class="page-title">Item Details</h1>
           <p class="muted">View full details. Owners can edit, change status, or delete.</p>
         </div>
       </div>
 
-      <!-- Details Card -->
-      <section class="card" id="detailCard" style="padding:18px;">
-        <div id="loading" class="muted">Loading item...</div>
+      <section class="card details-shell" id="detailCard">
+        <div id="loading" class="muted details-loading">Loading item...</div>
 
         <div id="errorState" class="empty" style="display:none;">
           <h3 style="margin-bottom:8px;">Item not found</h3>
@@ -118,41 +116,69 @@
         </div>
 
         <div id="detailContent" style="display:none;">
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
-            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-              <span class="badge" id="refCode"></span>
-              <span class="status" id="itemStatus"></span>
-            </div>
-            <div class="muted small" id="itemMetaTop"></div>
-          </div>
+          <div class="details-grid">
 
-          <h2 id="itemTitle" style="margin:6px 0 10px;"></h2>
+            <!-- LEFT: IMAGE -->
+            <div class="details-media-card">
+              <img
+                id="itemPhoto"
+                class="details-image"
+                alt="Item photo"
+                style="display:none;"
+              />
 
-          <img
-            id="itemPhoto"
-            alt="Item photo"
-            style="display:none; width:100%; max-width:720px; border-radius:14px; margin:10px 0 14px; object-fit:cover;"
-          />
-
-          <div style="display:grid; grid-template-columns: 1fr; gap:10px; max-width:720px;">
-            <div>
-              <div class="muted small" style="margin-bottom:4px;">Description</div>
-              <div id="itemDescription"></div>
+              <div id="itemPhotoFallback" class="details-image-fallback">
+                <img src="/images/placeholder.png" alt="No image available" class="details-placeholder" />
+              </div>
             </div>
 
-            <div>
-              <div class="muted small" style="margin-bottom:4px;">Contact</div>
-              <div><strong id="itemContact"></strong></div>
-            </div>
-          </div>
+            <!-- RIGHT: CONTENT -->
+            <div class="details-info-card">
+              <div class="details-topbar">
+                <div class="details-badges">
+                  <span class="badge" id="refCode"></span>
+                  <span class="details-status-pill" id="itemStatus"></span>
+                </div>
 
-          <!-- OWNER ACTIONS -->
-          <div id="ownerActions" style="display:none; margin-top:16px;">
-            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-              <a id="btnEdit" class="btn btn-primary" href="#">Edit</a>
-              <button id="btnToggleStatus" class="btn btn-ghost-light" type="button">Change Status</button>
-              <button id="btnDelete" class="btn btn-danger" type="button">Delete</button>
+                <div class="muted small" id="itemMetaTop"></div>
+              </div>
+
+              <h2 id="itemTitle" class="details-title"></h2>
+
+              <div class="details-meta-grid">
+                <div class="details-meta-box">
+                  <div class="details-label">Category</div>
+                  <div id="itemCategory"></div>
+                </div>
+
+                <div class="details-meta-box">
+                  <div class="details-label">Location</div>
+                  <div id="itemLocation"></div>
+                </div>
+
+                <div class="details-meta-box">
+                  <div class="details-label">Date</div>
+                  <div id="itemDate"></div>
+                </div>
+
+                <div class="details-meta-box">
+                  <div class="details-label">Contact</div>
+                  <div id="itemContact"></div>
+                </div>
+              </div>
+
+              <div class="details-section">
+                <div class="details-label">Description</div>
+                <div id="itemDescription" class="details-description"></div>
+              </div>
+
+              <div id="ownerActions" class="details-actions" style="display:none;">
+                <a id="btnEdit" class="btn btn-primary" href="#">Edit</a>
+                <button id="btnToggleStatus" class="btn btn-ghost-light" type="button">Change Status</button>
+                <button id="btnDelete" class="btn btn-danger" type="button">Delete</button>
+              </div>
             </div>
+
           </div>
         </div>
       </section>

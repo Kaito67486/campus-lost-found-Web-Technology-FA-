@@ -71,11 +71,28 @@ function renderItem(item) {
   const desc = document.getElementById("itemDescription");
   const contact = document.getElementById("itemContact");
 
+  const categoryEl = document.getElementById("itemCategory");
+  const locationEl = document.getElementById("itemLocation");
+  const dateEl = document.getElementById("itemDate");
+
   if (ref) ref.textContent = item.referenceCode || "";
-  if (status) status.textContent = item.status || "";
   if (title) title.textContent = item.title || "";
   if (desc) desc.textContent = item.description || "";
   if (contact) contact.textContent = item.contact || "";
+  if (categoryEl) categoryEl.textContent = item.category || "-";
+  if (locationEl) locationEl.textContent = item.location || "-";
+  if (dateEl) dateEl.textContent = (item.date || "").slice(0, 10) || "-";
+
+  if (status) {
+    const rawStatus = item.status || "Active";
+    status.textContent = rawStatus;
+    status.className = "details-status-pill";
+
+    const statusKey = rawStatus.toLowerCase();
+    if (statusKey === "active") status.classList.add("status-active");
+    else if (statusKey === "claimed") status.classList.add("status-claimed");
+    else if (statusKey === "resolved") status.classList.add("status-resolved");
+  }
 
   const meta = [
     item.category || "",
@@ -85,23 +102,30 @@ function renderItem(item) {
 
   if (metaTop) metaTop.textContent = meta;
 
-  // photo
+  // photo + fallback
   const photoEl = document.getElementById("itemPhoto");
-  if (photoEl) {
+  const photoFallback = document.getElementById("itemPhotoFallback");
+
+  if (photoEl && photoFallback) {
     if (item.imagePath) {
       photoEl.src = item.imagePath;
       photoEl.style.display = "block";
+      photoFallback.style.display = "none";
+
+      photoEl.onerror = () => {
+        photoEl.style.display = "none";
+        photoFallback.style.display = "flex";
+      };
     } else {
       photoEl.style.display = "none";
       photoEl.removeAttribute("src");
+      photoFallback.style.display = "flex";
     }
   }
 
-  // edit link
   const btnEdit = document.getElementById("btnEdit");
   if (btnEdit) btnEdit.href = `report.html?id=${encodeURIComponent(item.id)}`;
 
-  // actions
   const btnToggle = document.getElementById("btnToggleStatus");
   if (btnToggle) {
     btnToggle.onclick = () => toggleStatus(item);
