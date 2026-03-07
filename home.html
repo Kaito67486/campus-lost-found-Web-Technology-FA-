@@ -114,6 +114,7 @@
         </p>
 
         <div class="search-card">
+
           <div class="search-modern">
             <span class="search-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24">
@@ -131,6 +132,41 @@
 
             <button id="btnClear" class="clear-btn" type="button" aria-label="Clear search">
               ×
+            </button>
+          </div>
+
+          <div class="filter-bar">
+            <div class="filter-group">
+              <label for="filterCategory">Category</label>
+              <select id="filterCategory">
+                <option value="">All</option>
+                <option value="Lost">Lost</option>
+                <option value="Found">Found</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="filterStatus">Status</label>
+              <select id="filterStatus">
+                <option value="">All</option>
+                <option value="Active">Active</option>
+                <option value="Claimed">Claimed</option>
+                <option value="Resolved">Resolved</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="filterSort">Sort By</label>
+              <select id="filterSort">
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="az">Title A–Z</option>
+                <option value="za">Title Z–A</option>
+              </select>
+            </div>
+
+            <button id="btnApplyFilters" class="btn btn-ghost-light" type="button">
+              Apply Filters
             </button>
           </div>
 

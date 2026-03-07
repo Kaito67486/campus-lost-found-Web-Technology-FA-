@@ -2470,7 +2470,7 @@ body{
 }
 
 /* =========================
-   MODERN SEARCH BAR
+   MODERN SEARCH BAR + FILTERS
 ========================= */
 
 .search-card{
@@ -2490,7 +2490,7 @@ body{
   border:1px solid #dbe3ef;
   border-radius:14px;
   padding:10px 14px;
-  transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  transition:border-color .2s ease, box-shadow .2s ease;
 }
 
 .search-modern:focus-within{
@@ -2511,12 +2511,6 @@ body{
   stroke:#64748b;
   stroke-width:2;
   fill:none;
-  transition:transform .2s ease, stroke .2s ease;
-}
-
-.search-modern:focus-within .search-icon svg{
-  stroke:#2563eb;
-  transform:scale(1.05);
 }
 
 .search-modern input{
@@ -2548,7 +2542,6 @@ body{
   justify-content:center;
   cursor:pointer;
   flex-shrink:0;
-
   opacity:0;
   visibility:hidden;
   transform:scale(.9);
@@ -2575,8 +2568,67 @@ body{
   transform:scale(.94);
 }
 
+/* filter bar */
+.filter-bar{
+  display:flex;
+  align-items:end;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+
+.filter-group{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  min-width:180px;
+}
+
+.filter-group label{
+  font-size:12px;
+  font-weight:800;
+  color:#475569;
+}
+
+.filter-group select{
+  height:42px;
+  padding:0 12px;
+  border-radius:12px;
+  border:1px solid #d1d5db;
+  background:#f9fafb;
+  font-size:14px;
+  color:#111827;
+  outline:none;
+  transition:border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.filter-group select:focus{
+  border-color:#3b82f6;
+  background:#fff;
+  box-shadow:0 0 0 3px rgba(59,130,246,.12);
+}
+
+#btnApplyFilters{
+  height:42px;
+  padding:0 16px;
+}
+
 .help{
   margin-top:10px;
   font-size:12px;
   color:#6b7280;
+}
+
+@media (max-width: 640px){
+  .filter-bar{
+    align-items:stretch;
+  }
+
+  .filter-group{
+    min-width:100%;
+  }
+
+  #btnApplyFilters{
+    width:100%;
+  }
 }

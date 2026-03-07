@@ -90,6 +90,9 @@ async function loadStatsAndRecent(searchQuery) {
   const grid = document.getElementById("itemsGrid");
   const empty = document.getElementById("emptyState");
   const count = document.getElementById("itemsCount");
+  const filterCategory = document.getElementById("filterCategory");
+  const filterStatus = document.getElementById("filterStatus");
+  const filterSort = document.getElementById("filterSort");
 
   if (!grid) return;
   grid.innerHTML = "";
@@ -98,20 +101,26 @@ async function loadStatsAndRecent(searchQuery) {
 
   try {
     const url = new URL("/api/items", window.location.origin);
-    if (searchQuery && searchQuery.trim()) {
-      url.searchParams.set("q", searchQuery.trim());
-    }
+
+    const q = (searchQuery || "").trim();
+    const category = filterCategory?.value || "";
+    const status = filterStatus?.value || "";
+
+    if (q) url.searchParams.set("q", q);
+    if (category) url.searchParams.set("category", category);
+    if (status) url.searchParams.set("status", status);
 
     const res = await fetch(url.toString(), { credentials: "include" });
     if (!res.ok) throw new Error("Failed to load items");
 
     const data = await res.json();
-    const allItems = Array.isArray(data.items) ? data.items : [];
+    let allItems = Array.isArray(data.items) ? data.items : [];
 
-    // ---- compute stats from ALL items (ANIMATED) ----
+    const sortValue = filterSort?.value || "newest";
+    allItems = sortItems(allItems, sortValue);
+
     computeAndRenderStats(allItems);
 
-    // ---- show only first 8 ----
     const items = allItems.slice(0, 8);
 
     if (count) {
@@ -133,7 +142,6 @@ async function loadStatsAndRecent(searchQuery) {
     if (count) count.textContent = "Showing 0 items";
     if (empty) empty.style.display = "block";
 
-    // animate down to 0
     computeAndRenderStats([]);
   }
 }
@@ -163,6 +171,10 @@ function computeAndRenderStats(items) {
 function wireSearch() {
   const q = document.getElementById("q");
   const btnClear = document.getElementById("btnClear");
+  const btnApplyFilters = document.getElementById("btnApplyFilters");
+  const filterCategory = document.getElementById("filterCategory");
+  const filterStatus = document.getElementById("filterStatus");
+  const filterSort = document.getElementById("filterSort");
   const imgFile = document.getElementById("imgFile");
 
   if (!q) return;
@@ -176,10 +188,14 @@ function wireSearch() {
     }
   }
 
+  function runSearch() {
+    loadStatsAndRecent(q.value);
+  }
+
   q.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      loadStatsAndRecent(q.value);
+      runSearch();
     }
   });
 
@@ -191,10 +207,32 @@ function wireSearch() {
     btnClear.addEventListener("click", () => {
       q.value = "";
       toggleClear();
+
+      if (filterCategory) filterCategory.value = "";
+      if (filterStatus) filterStatus.value = "";
+      if (filterSort) filterSort.value = "newest";
+
       loadStatsAndRecent("");
       q.focus();
+
       if (imgFile) imgFile.value = "";
     });
+  }
+
+  if (btnApplyFilters) {
+    btnApplyFilters.addEventListener("click", runSearch);
+  }
+
+  if (filterCategory) {
+    filterCategory.addEventListener("change", runSearch);
+  }
+
+  if (filterStatus) {
+    filterStatus.addEventListener("change", runSearch);
+  }
+
+  if (filterSort) {
+    filterSort.addEventListener("change", runSearch);
   }
 
   if (imgFile) {
@@ -267,6 +305,23 @@ function renderItemCard(it) {
   a.appendChild(body);
 
   return a;
+}
+
+function sortItems(items, sortValue) {
+  const arr = [...items];
+
+  if (sortValue === "oldest") {
+    arr.sort((a, b) => (Number(a.createdAt) || 0) - (Number(b.createdAt) || 0));
+  } else if (sortValue === "az") {
+    arr.sort((a, b) => String(a.title || "").localeCompare(String(b.title || "")));
+  } else if (sortValue === "za") {
+    arr.sort((a, b) => String(b.title || "").localeCompare(String(a.title || "")));
+  } else {
+    // newest default
+    arr.sort((a, b) => (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0));
+  }
+
+  return arr;
 }
 
 function timeAgo(date) {
