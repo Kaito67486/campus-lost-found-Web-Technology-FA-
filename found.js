@@ -92,15 +92,15 @@ document.addEventListener("DOMContentLoaded", () => {
           ? timeAgo(Number(item.createdAt))
           : (item.date || "");
 
-        const media = `
-          <img
-            class="item-img"
-            src="${escapeAttr(imagePath)}"
-            alt="${escapeAttr(title)}"
-            onerror="this.onerror=null;this.src='images/placeholder.png';"
-          >
-        `;
-
+        const media = item.imagePath
+        ? `<img class="item-img"
+              src="${escapeAttr(item.imagePath)}"
+              alt="${escapeAttr(title)}"
+              onerror="this.onerror=null;this.src='/images/placeholder.png';">`
+        : `<img class="item-img"
+              src="/images/placeholder.png"
+              alt="No image available">`;
+              
         return `
           <div class="item-card" data-id="${escapeAttr(item.id)}">
             ${media}
