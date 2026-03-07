@@ -158,15 +158,6 @@ function renderItem(item) {
     };
   }
 
-  const btnToggle = document.getElementById("btnToggleStatus");
-  if (btnToggle) {
-    btnToggle.onclick = () => toggleStatus(item);
-  }
-
-  const btnDelete = document.getElementById("btnDelete");
-  if (btnDelete) {
-    btnDelete.onclick = () => deleteItem(item.id);
-  }
 }
 
 async function checkOwnership(item) {
@@ -185,14 +176,20 @@ async function checkOwnership(item) {
     const currentUserId = Number(data.user.id);
     const ownerId = Number(item.ownerUserId ?? item.owner_user_id);
 
-    if (currentUserId === ownerId) {
+      if (currentUserId === ownerId) {
       if (ownerActions) ownerActions.style.display = "flex";
-      if (btnEdit) btnEdit.href = `report.html?id=${encodeURIComponent(item.id)}`;
-    } else {
-      if (ownerActions) ownerActions.style.display = "none";
-      if (btnEdit) btnEdit.removeAttribute("href");
-      if (btnToggle) btnToggle.onclick = null;
-      if (btnDelete) btnDelete.onclick = null;
+
+      if (btnEdit) {
+        btnEdit.href = `report.html?id=${encodeURIComponent(item.id)}`;
+      }
+
+      if (btnToggle) {
+        btnToggle.onclick = () => toggleStatus(item);
+      }
+
+      if (btnDelete) {
+        btnDelete.onclick = () => deleteItem(item.id);
+      }
     }
   } catch (err) {
     console.error("OWNERSHIP CHECK ERROR:", err);
