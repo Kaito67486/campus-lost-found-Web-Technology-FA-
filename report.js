@@ -162,29 +162,30 @@ document.addEventListener("DOMContentLoaded", () => {
           throw new Error("Not logged in");
         }
 
-        const it = itemData.item;
+        const item = itemData.item;
         const currentUserId = Number(meData.user.id);
-        const ownerId = Number(it.ownerUserId ?? it.owner_user_id);
+        const ownerId = Number(item.ownerUserId || item.owner_user_id);
 
         if (currentUserId !== ownerId) {
           toast("You are not allowed to edit this report.", "error");
           setTimeout(() => {
             window.location.href = `details.html?id=${encodeURIComponent(id)}`;
-          }, 1500);
+          }, 1200);
           return;
         }
 
-        titleEl.value = it.title || "";
-        descEl.value = it.description || "";
-        categoryEl.value = it.category || "";
-        locationEl.value = it.location || "";
-        dateEl.value = (it.date || "").slice(0, 10);
-        contactEl.value = it.contact || "";
-        statusEl.value = it.status || "Active";
+        titleEl.value = item.title || "";
+        descEl.value = item.description || "";
+        categoryEl.value = item.category || "";
+        locationEl.value = item.location || "";
+        dateEl.value = (item.date || "").slice(0, 10);
+        contactEl.value = item.contact || "";
+        statusEl.value = item.status || "Active";
+
         categoryEl.disabled = true;
 
-        if (previewEl && it.imagePath) {
-          previewEl.src = it.imagePath;
+        if (previewEl && item.imagePath) {
+          previewEl.src = item.imagePath;
           previewEl.style.display = "block";
         }
       } catch (err) {

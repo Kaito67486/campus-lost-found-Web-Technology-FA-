@@ -183,6 +183,11 @@ if (photoEl) {
   }
 }
 
+  const ownerActions = document.getElementById("ownerActions");
+const btnEdit = document.getElementById("btnEdit");
+
+if (ownerActions) ownerActions.style.display = "none";
+
 async function checkOwnership(item) {
   try {
     const res = await fetch("/api/auth/me", { credentials: "include" });
@@ -191,18 +196,15 @@ async function checkOwnership(item) {
     const data = await res.json().catch(() => ({}));
     if (!res.ok || !data.ok || !data.user) return;
 
-    const ownerId = Number(item.ownerUserId ?? item.owner_user_id);
     const currentUserId = Number(data.user.id);
+    const ownerId = Number(item.ownerUserId || item.owner_user_id);
 
     if (currentUserId === ownerId) {
-      const actions = document.getElementById("ownerActions");
-      const btnEdit = document.getElementById("btnEdit");
-
-      if (actions) actions.style.display = "flex";
+      if (ownerActions) ownerActions.style.display = "flex";
       if (btnEdit) btnEdit.href = `report.html?id=${encodeURIComponent(item.id)}`;
     }
-  } catch {
-    // ignore
+  } catch (err) {
+    console.error("OWNERSHIP CHECK ERROR:", err);
   }
 }
 
