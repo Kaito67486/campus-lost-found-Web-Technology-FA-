@@ -2632,3 +2632,186 @@ body{
     width:100%;
   }
 }
+
+/* =================================================
+   ABOUT PAGE
+================================================= */
+
+.about-page{
+  padding:24px;
+}
+
+/* HERO SECTION */
+
+.about-hero{
+  position:relative;
+  min-height:620px;
+  border-radius:26px;
+  overflow:hidden;
+
+  background:
+  linear-gradient(90deg, rgba(255,255,255,.95) 0%, rgba(255,255,255,.88) 40%, rgba(255,255,255,.65) 100%),
+  url("images/building.png") center/cover no-repeat;
+
+  box-shadow:0 20px 50px rgba(0,0,0,.08);
+}
+
+.about-hero-content{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  align-items:center;
+  gap:40px;
+  padding:60px;
+}
+
+.about-title{
+  font-size:56px;
+  font-weight:900;
+  line-height:1.05;
+  color:#0f172a;
+  margin-bottom:20px;
+}
+
+.about-text{
+  font-size:18px;
+  color:#475569;
+  line-height:1.8;
+  max-width:620px;
+}
+
+.about-chip-row{
+  margin-top:24px;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.about-chip{
+  padding:8px 16px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:700;
+  background:#f1f5f9;
+  border:1px solid #e2e8f0;
+}
+
+/* PREVIEW PANEL */
+
+.about-preview-card{
+  background:#ffffffcc;
+  backdrop-filter:blur(8px);
+  border-radius:20px;
+  padding:24px;
+  border:1px solid #e2e8f0;
+}
+
+.about-preview-head{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.about-preview-badge{
+  background:#dbeafe;
+  color:#0369a1;
+  font-size:12px;
+  font-weight:800;
+  padding:6px 12px;
+  border-radius:999px;
+}
+
+.about-preview-title{
+  font-size:20px;
+  font-weight:900;
+  margin-bottom:18px;
+}
+
+.about-preview-item{
+  background:white;
+  border-radius:14px;
+  border:1px solid #e2e8f0;
+  padding:14px 16px;
+  margin-bottom:12px;
+}
+
+.about-preview-item strong{
+  display:block;
+  margin-bottom:4px;
+}
+
+/* FEATURE CARDS */
+
+.about-features{
+  margin-top:30px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.about-feature-card{
+  background:white;
+  border-radius:20px;
+  padding:26px;
+  border:1px solid #e2e8f0;
+  box-shadow:0 10px 30px rgba(0,0,0,.04);
+}
+
+.about-feature-icon{
+  font-size:32px;
+  margin-bottom:12px;
+}
+
+.about-feature-card h3{
+  font-size:20px;
+  margin-bottom:10px;
+}
+
+.about-feature-card p{
+  color:#64748b;
+  line-height:1.7;
+}
+
+/* PURPOSE SECTION */
+
+.about-purpose{
+  margin-top:26px;
+}
+
+.about-purpose-card{
+  background:white;
+  border-radius:20px;
+  padding:26px;
+  border:1px solid #e2e8f0;
+  box-shadow:0 10px 30px rgba(0,0,0,.04);
+}
+
+.about-purpose-card h2{
+  font-size:26px;
+  margin-bottom:12px;
+}
+
+.about-purpose-card p{
+  font-size:16px;
+  color:#64748b;
+  line-height:1.8;
+  max-width:800px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+
+.about-hero-content{
+grid-template-columns:1fr;
+padding:40px;
+}
+
+.about-features{
+grid-template-columns:1fr;
+}
+
+.about-title{
+font-size:40px;
+}
+
+}

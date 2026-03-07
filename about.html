@@ -1,61 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About Us • Campus Lost & Found</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>About • Campus Lost & Found</title>
+
+<link rel="stylesheet" href="style.css">
+
 </head>
-<body>
 
-  <header class="topbar">
-    <div class="topbar-left">
-      <div class="logo">LF</div>
-      <div class="brand-text">
-        <div class="brand-title">Campus Lost & Found</div>
-        <div class="brand-subtitle">About Us</div>
-      </div>
-    </div>
+<body class="page">
 
-    <div class="topbar-right">
-      <a class="btn btn-ghost" href="index.html">Home</a>
-      <a class="btn btn-ghost" href="about.html">About Us</a>
-      <a class="btn btn-ghost" href="contact.html">Contact Us</a>
-    </div>
-  </header>
+<header class="topbar">
+<div class="topbar-left">
 
-  <main class="auth">
-    <section class="auth-card">
-      <h1 class="auth-title">About Us</h1>
+<div class="logo">LF</div>
 
-      <p class="muted" style="margin-top:10px;">
-        Campus Lost & Found is a simple system designed to help students and staff
-        report and recover lost items quickly and securely.
-      </p>
+<div class="brand-text">
+<div class="brand-title">Campus Lost & Found</div>
+<div class="brand-subtitle">About</div>
+</div>
 
-      <div style="margin-top:14px;">
-        <h3 style="margin-bottom:6px;">What we do</h3>
-        <ul style="padding-left:18px; color:#374151;">
-          <li>Allow users to report lost or found items.</li>
-          <li>Help match items using clear descriptions and location details.</li>
-          <li>Track item status (Active, Claimed, Resolved).</li>
-        </ul>
-      </div>
+</div>
 
-      <div style="margin-top:14px;">
-        <h3 style="margin-bottom:6px;">Why it matters</h3>
-        <p style="color:#374151;">
-          A centralized system reduces confusion and improves the chances of returning
-          items to their owners.
-        </p>
-      </div>
-    </section>
-  </main>
+<div class="topbar-right">
+<a class="btn btn-ghost-dark" href="index.html">Home</a>
+<a class="btn btn-ghost-dark" href="about.html">About Us</a>
+<a class="btn btn-ghost-dark" href="contact.html">Contact Us</a>
+</div>
 
-  <footer class="footer">
-    © <span id="year"></span> Campus Lost & Found
-  </footer>
+</header>
 
-  <script src="script.js"></script>
+<main class="about-page">
+
+<!-- HERO -->
+
+<section class="about-hero">
+
+<div class="about-hero-content">
+
+<div>
+
+<h1 class="about-title">
+Lost something on campus?<br>
+Report it. Track it.<br>
+Find it faster.
+</h1>
+
+<p class="about-text">
+The Campus Lost & Found system helps students and staff report lost or found
+items, search listings across campus, and track the status of reports
+through a centralized platform.
+</p>
+
+<div class="about-chip-row">
+<span class="about-chip">Fast reporting</span>
+<span class="about-chip">Search & filter</span>
+<span class="about-chip">Status tracking</span>
+</div>
+
+</div>
+
+<div class="about-preview-card">
+
+<div class="about-preview-head">
+<span>Overview</span>
+<span class="about-preview-badge">Live</span>
+</div>
+
+<h2 class="about-preview-title">
+Lost & Found System
+</h2>
+
+<div class="about-preview-item">
+<strong>Report Lost or Found Items</strong>
+<p>Quickly submit reports with location, contact information and optional photo.</p>
+</div>
+
+<div class="about-preview-item">
+<strong>Search and Browse Items</strong>
+<p>Find items using keywords, filters, and category listings.</p>
+</div>
+
+<div class="about-preview-item">
+<strong>Track Item Status</strong>
+<p>Follow updates when items become active, claimed, or resolved.</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- FEATURES -->
+
+<section class="about-features">
+
+<article class="about-feature-card">
+<div class="about-feature-icon">📝</div>
+<h3>Report Lost or Found Items</h3>
+<p>
+Students and staff can submit reports with title, location, date,
+contact details and optional photo.
+</p>
+</article>
+
+<article class="about-feature-card">
+<div class="about-feature-icon">🔎</div>
+<h3>Search and Browse Items</h3>
+<p>
+Users can browse lost and found listings or search using filters
+to locate matching items across campus.
+</p>
+</article>
+
+<article class="about-feature-card">
+<div class="about-feature-icon">📌</div>
+<h3>Track Item Status</h3>
+<p>
+Stay updated on whether items are active, claimed,
+or resolved through the centralized system.
+</p>
+</article>
+
+</section>
+
+<!-- PURPOSE -->
+
+<section class="about-purpose">
+
+<div class="about-purpose-card">
+
+<h2>Why this system matters</h2>
+
+<p>
+A centralized Lost & Found system helps students and staff quickly
+recover misplaced belongings while reducing confusion across campus.
+By organizing reports and updates in one platform, the system
+improves communication and increases the chances of returning items
+to their rightful owners.
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+<footer class="footer">
+© <span id="year"></span> Campus Lost & Found
+</footer>
+
+<script>
+document.getElementById("year").textContent=new Date().getFullYear();
+</script>
+
 </body>
 </html>
