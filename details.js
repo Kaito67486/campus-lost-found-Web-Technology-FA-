@@ -183,7 +183,7 @@ if (photoEl) {
   }
 }
 
-  const ownerActions = document.getElementById("ownerActions");
+const ownerActions = document.getElementById("ownerActions");
 const btnEdit = document.getElementById("btnEdit");
 
 if (ownerActions) ownerActions.style.display = "none";
