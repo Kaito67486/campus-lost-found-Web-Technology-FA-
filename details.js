@@ -18,13 +18,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const id = qs.get("id");
 
   const from = qs.get("from");
-const btnBack = document.getElementById("btnBack");
+  const btnBack = document.getElementById("btnBack");
 
-const allowedPages = ["home.html", "lost.html", "found.html"];
+  const allowedPages = ["home.html", "lost.html", "found.html"];
 
-if (btnBack && allowedPages.includes(from)) {
-  btnBack.href = from;
-}
+  if (btnBack && allowedPages.includes(from)) {
+    btnBack.href = from;
+  }
 
   if (!id) {
     showError();
