@@ -1,23 +1,22 @@
 // details.js - polished details page + owner actions + image status badge
 
 document.addEventListener("DOMContentLoaded", () => {
-  // page transition
   document.body.classList.add("page-ready");
 
-  // footer year
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // sidebar highlight
   highlightSidebar();
 
-  // logout
   const logoutBtn = document.getElementById("btnLogout");
   if (logoutBtn) logoutBtn.addEventListener("click", logout);
 
-  // load item by id
+  const ownerActions = document.getElementById("ownerActions");
+  if (ownerActions) ownerActions.style.display = "none";
+
   const qs = new URLSearchParams(window.location.search);
   const id = qs.get("id");
+
   if (!id) {
     showError();
     return;
@@ -57,7 +56,7 @@ async function loadItem(id) {
 
     const item = data.item;
     renderItem(item);
-    checkOwnership(item);
+    await checkOwnership(item);
   } catch (err) {
     console.error("LOAD ITEM ERROR:", err);
     showError();
@@ -73,7 +72,6 @@ function renderItem(item) {
   if (errorState) errorState.style.display = "none";
   if (detailContent) detailContent.style.display = "block";
 
-  // main fields
   const ref = document.getElementById("refCode");
   const statusTop = document.getElementById("itemStatus");
   const photoStatus = document.querySelector(".details-photo-status");
@@ -106,72 +104,60 @@ function renderItem(item) {
   if (locationEl) locationEl.textContent = locationText;
   if (dateEl) dateEl.textContent = dateText;
 
-  // top-right meta text
   const meta = [categoryText, locationText, dateText].filter(Boolean).join(" • ");
   if (metaTop) metaTop.textContent = meta;
 
-  // right-panel status
   if (statusTop) statusTop.textContent = statusText;
 
-  // image corner badge
-if (photoStatus) {
-  const s = String(statusText).toLowerCase();
-  const c = String(categoryText).toLowerCase();
+  if (photoStatus) {
+    const s = String(statusText).toLowerCase();
+    const c = String(categoryText).toLowerCase();
 
-  photoStatus.textContent = `${categoryText} • ${statusText}`;
+    photoStatus.textContent = `${categoryText} • ${statusText}`;
 
-  // default
-  photoStatus.style.background = "#eef2ff";
-  photoStatus.style.color = "#1d4ed8";
-  photoStatus.style.borderColor = "#dbe7ff";
-  photoStatus.style.boxShadow = "0 8px 18px rgba(37,99,235,.12)";
+    photoStatus.style.background = "#eef2ff";
+    photoStatus.style.color = "#1d4ed8";
+    photoStatus.style.borderColor = "#dbe7ff";
+    photoStatus.style.boxShadow = "0 8px 18px rgba(37,99,235,.12)";
 
-  // category color base
-  if (c === "lost") {
-    photoStatus.style.background = "#fef2f2";
-    photoStatus.style.color = "#b91c1c";
-    photoStatus.style.borderColor = "#fecaca";
-    photoStatus.style.boxShadow = "0 8px 18px rgba(185,28,28,.12)";
-  } else if (c === "found") {
-    photoStatus.style.background = "#ecfdf3";
-    photoStatus.style.color = "#15803d";
-    photoStatus.style.borderColor = "#bbf7d0";
-    photoStatus.style.boxShadow = "0 8px 18px rgba(21,128,61,.12)";
+    if (c === "lost") {
+      photoStatus.style.background = "#fef2f2";
+      photoStatus.style.color = "#b91c1c";
+      photoStatus.style.borderColor = "#fecaca";
+      photoStatus.style.boxShadow = "0 8px 18px rgba(185,28,28,.12)";
+    } else if (c === "found") {
+      photoStatus.style.background = "#ecfdf3";
+      photoStatus.style.color = "#15803d";
+      photoStatus.style.borderColor = "#bbf7d0";
+      photoStatus.style.boxShadow = "0 8px 18px rgba(21,128,61,.12)";
+    }
+
+    if (s === "claimed") {
+      photoStatus.style.background = "#fff7ed";
+      photoStatus.style.color = "#c2410c";
+      photoStatus.style.borderColor = "#fed7aa";
+      photoStatus.style.boxShadow = "0 8px 18px rgba(194,65,12,.12)";
+    } else if (s === "resolved") {
+      photoStatus.style.background = "#f3f4f6";
+      photoStatus.style.color = "#374151";
+      photoStatus.style.borderColor = "#e5e7eb";
+      photoStatus.style.boxShadow = "0 8px 18px rgba(55,65,81,.10)";
+    }
   }
 
-  // status override / refine
-  if (s === "claimed") {
-    photoStatus.style.background = "#fff7ed";
-    photoStatus.style.color = "#c2410c";
-    photoStatus.style.borderColor = "#fed7aa";
-    photoStatus.style.boxShadow = "0 8px 18px rgba(194,65,12,.12)";
-  } else if (s === "resolved") {
-    photoStatus.style.background = "#f3f4f6";
-    photoStatus.style.color = "#374151";
-    photoStatus.style.borderColor = "#e5e7eb";
-    photoStatus.style.boxShadow = "0 8px 18px rgba(55,65,81,.10)";
-  }
-}
-  // photo + fallback
   const photoEl = document.getElementById("itemPhoto");
+  if (photoEl) {
+    if (item.imagePath) {
+      photoEl.src = item.imagePath;
+    } else {
+      photoEl.src = "https://via.placeholder.com/600x400?text=No+Image";
+    }
 
-if (photoEl) {
-  if (item.imagePath) {
-    photoEl.src = item.imagePath;
-  } else {
-    photoEl.src = "https://via.placeholder.com/600x400?text=No+Image";
+    photoEl.onerror = () => {
+      photoEl.src = "https://via.placeholder.com/600x400?text=No+Image";
+    };
   }
 
-  photoEl.onerror = () => {
-    photoEl.src = "https://via.placeholder.com/600x400?text=No+Image";
-  };
-}
-
-  // edit link
-  const btnEdit = document.getElementById("btnEdit");
-  if (btnEdit) btnEdit.href = `report.html?id=${encodeURIComponent(item.id)}`;
-
-  // owner actions
   const btnToggle = document.getElementById("btnToggleStatus");
   if (btnToggle) {
     btnToggle.onclick = () => toggleStatus(item);
@@ -183,12 +169,12 @@ if (photoEl) {
   }
 }
 
-const ownerActions = document.getElementById("ownerActions");
-const btnEdit = document.getElementById("btnEdit");
-
-if (ownerActions) ownerActions.style.display = "none";
-
 async function checkOwnership(item) {
+  const ownerActions = document.getElementById("ownerActions");
+  const btnEdit = document.getElementById("btnEdit");
+  const btnToggle = document.getElementById("btnToggleStatus");
+  const btnDelete = document.getElementById("btnDelete");
+
   try {
     const res = await fetch("/api/auth/me", { credentials: "include" });
     if (res.status === 401) return;
@@ -197,14 +183,20 @@ async function checkOwnership(item) {
     if (!res.ok || !data.ok || !data.user) return;
 
     const currentUserId = Number(data.user.id);
-    const ownerId = Number(item.ownerUserId || item.owner_user_id);
+    const ownerId = Number(item.ownerUserId ?? item.owner_user_id);
 
     if (currentUserId === ownerId) {
       if (ownerActions) ownerActions.style.display = "flex";
       if (btnEdit) btnEdit.href = `report.html?id=${encodeURIComponent(item.id)}`;
+    } else {
+      if (ownerActions) ownerActions.style.display = "none";
+      if (btnEdit) btnEdit.removeAttribute("href");
+      if (btnToggle) btnToggle.onclick = null;
+      if (btnDelete) btnDelete.onclick = null;
     }
   } catch (err) {
     console.error("OWNERSHIP CHECK ERROR:", err);
+    if (ownerActions) ownerActions.style.display = "none";
   }
 }
 
