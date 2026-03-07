@@ -92,10 +92,14 @@ document.addEventListener("DOMContentLoaded", () => {
           ? timeAgo(Number(item.createdAt))
           : (item.date || "");
 
-        // Home-style media block: always show item-img height
-        const media = item.imagePath
-          ? `<img class="item-img" src="${escapeAttr(item.imagePath)}" alt="${escapeAttr(title)}">`
-          : `<div class="item-img"></div>`;
+        const media = `
+          <img
+            class="item-img"
+            src="${escapeAttr(imagePath)}"
+            alt="${escapeAttr(title)}"
+            onerror="this.onerror=null;this.src='images/placeholder.png';"
+          >
+        `;
 
         return `
           <div class="item-card" data-id="${escapeAttr(item.id)}">
