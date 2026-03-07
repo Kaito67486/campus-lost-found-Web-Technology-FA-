@@ -146,14 +146,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function loadExisting(id) {
       try {
-        const res = await fetch(`/api/items/${encodeURIComponent(id)}`, { credentials: "include" });
-        const data = await res.json().catch(() => ({}));
+        const [itemRes, meRes] = await Promise.all([
+          fetch(`/api/items/${encodeURIComponent(id)}`, { credentials: "include" }),
+          fetch("/api/auth/me", { credentials: "include" })
+        ]);
 
-        if (!res.ok || !data.ok || !data.item) {
+        const itemData = await itemRes.json().catch(() => ({}));
+        const meData = await meRes.json().catch(() => ({}));
+
+        if (!itemRes.ok || !itemData.ok || !itemData.item) {
           throw new Error("Item not found");
         }
 
-        const it = data.item;
+        if (!meRes.ok || !meData.ok || !meData.user) {
+          throw new Error("Not logged in");
+        }
+
+        const it = itemData.item;
+        const currentUserId = Number(meData.user.id);
+        const ownerId = Number(it.ownerUserId ?? it.owner_user_id);
+
+        if (currentUserId !== ownerId) {
+          toast("You are not allowed to edit this report.", "error");
+          setTimeout(() => {
+            window.location.href = `details.html?id=${encodeURIComponent(id)}`;
+          }, 1500);
+          return;
+        }
 
         titleEl.value = it.title || "";
         descEl.value = it.description || "";
@@ -162,11 +181,8 @@ document.addEventListener("DOMContentLoaded", () => {
         dateEl.value = (it.date || "").slice(0, 10);
         contactEl.value = it.contact || "";
         statusEl.value = it.status || "Active";
-
-        // Optional: lock category in edit mode
         categoryEl.disabled = true;
 
-        // If existing photo, show it as preview (optional)
         if (previewEl && it.imagePath) {
           previewEl.src = it.imagePath;
           previewEl.style.display = "block";

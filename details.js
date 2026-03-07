@@ -191,10 +191,15 @@ async function checkOwnership(item) {
     const data = await res.json().catch(() => ({}));
     if (!res.ok || !data.ok || !data.user) return;
 
-    const ownerId = item.ownerUserId ?? item.owner_user_id;
-    if (ownerId && Number(data.user.id) === Number(ownerId)) {
+    const ownerId = Number(item.ownerUserId ?? item.owner_user_id);
+    const currentUserId = Number(data.user.id);
+
+    if (currentUserId === ownerId) {
       const actions = document.getElementById("ownerActions");
+      const btnEdit = document.getElementById("btnEdit");
+
       if (actions) actions.style.display = "flex";
+      if (btnEdit) btnEdit.href = `report.html?id=${encodeURIComponent(item.id)}`;
     }
   } catch {
     // ignore
