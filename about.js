@@ -1,10 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // show page if using body.page fade animation
   document.body.classList.add("page-ready");
 
-  // footer year
   const yearEl = document.getElementById("year");
   if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
   }
+
+  // reveal animation
+  const revealItems = document.querySelectorAll(".reveal");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("revealed");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.12,
+    }
+  );
+
+  revealItems.forEach((item) => observer.observe(item));
 });
