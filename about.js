@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
     yearEl.textContent = new Date().getFullYear();
   }
 
-  // reveal animation
   const revealItems = document.querySelectorAll(".reveal");
 
   const observer = new IntersectionObserver(
@@ -18,9 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     },
-    {
-      threshold: 0.12,
-    }
+    { threshold: 0.12 }
   );
 
   revealItems.forEach((item) => observer.observe(item));
