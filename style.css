@@ -33,18 +33,6 @@ body {
   gap: 12px;
 }
 
-.logo {
-  width: 38px;
-  height: 38px;
-  background: #2f8cff;
-  color: white;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-}
-
 .brand-text {
   display: flex;
   flex-direction: column;
@@ -889,20 +877,6 @@ body.page.page-ready{
   gap:12px;
 }
 
-.logo{
-  width:40px;
-  height:40px;
-  background:var(--primary);
-  color:white;
-  font-weight:900;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:12px;
-  letter-spacing:.4px;
-  box-shadow:0 10px 22px rgba(37,99,235,.20);
-}
-
 .brand-text{
   display:flex;
   flex-direction:column;
@@ -1337,17 +1311,6 @@ body{
   align-items:center;
   justify-content:space-between;
   padding:0 20px;
-}
-
-.logo{
-  width:40px;
-  height:40px;
-  background:#2563EB;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:12px;
-  font-weight:900;
 }
 
 .user-pill{
@@ -3071,4 +3034,25 @@ body{
   .about-contact-links-grid{
     grid-template-columns:1fr;
   }
+}
+
+/* Logo */
+.logo{
+  width:44px;
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:transform .2s ease;
+}
+
+.logo:hover{
+  transform:scale(1.05);
+}
+
+.logo img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
 }
