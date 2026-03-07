@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const url = editId ? `/api/items/${encodeURIComponent(editId)}` : `/api/items`;
         const method = editId ? "PUT" : "POST";
 
-        // ✅ Use FormData so file can be uploaded
+        // Use FormData so file can be uploaded
         const fd = new FormData();
         fd.append("category", payload.category);
         fd.append("status", payload.status);
@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fd.append("date", payload.date);
         fd.append("contact", payload.contact);
 
-        // ✅ attach photo if selected
+        // attach photo if selected
         if (photoEl && photoEl.files && photoEl.files[0]) {
           fd.append("photo", photoEl.files[0]); // must match upload.single("photo")
         }
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const newId = editId || data.item?.id;
         setTimeout(() => {
           window.location.href = `details.html?id=${encodeURIComponent(newId)}`;
-        }, 500);
+        }, 2000);
 
       } catch (err) {
         toast(err.message || "Something went wrong.", "error");
