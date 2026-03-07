@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
       card.addEventListener("click", () => {
         const id = card.getAttribute("data-id");
         if (!id) return;
-        window.location.href = `details.html?id=${encodeURIComponent(id)}&view=1`;
+        window.location.href = `details.html?id=${encodeURIComponent(id)}&from=lost.html`;
       });
     });
   }

@@ -262,7 +262,7 @@ function renderItemCard(it) {
 
   const a = document.createElement("a");
   a.className = "item-card";
-  a.href = id ? `details.html?id=${encodeURIComponent(id)}` : "#";
+  a.href = id ? `details.html?id=${encodeURIComponent(id)}&from=home.html` : "#";
 
   const img = document.createElement("img");
   img.className = "item-img";
