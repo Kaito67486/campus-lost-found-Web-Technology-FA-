@@ -1,299 +1,261 @@
-Campus Lost and Found Management System
-1. Project Overview
+# 🎒 Campus Lost & Found System
 
-The Campus Lost and Found Management System is a web-based application developed to help students and staff report, manage, and track lost and found items within the campus environment.
+## A full-stack web application for reporting, searching, and managing lost and found items on campus.
 
-The system provides a centralized platform where users can:
+This project is a complete web system built to help students and staff report and recover lost belongings within the campus.  
+It allows users to report lost or found items, search items, view hotspots on a campus map, and manage their own reports.
 
-Submit lost or found item reports
+The system improves item recovery efficiency and reduces the time required to locate lost belongings.
 
-View reported items
+---
 
-Track item status
+# 🌐 Live Demo
 
-Manage their own submissions
+You can try the system here:
 
-View item distribution through a building map interface
+👉 https://campus-lost-found-lwt4.onrender.com
 
-This project was developed as part of a web development assignment to demonstrate full-stack application design, database integration, and user authentication.
+No installation is required. Simply open the link in your browser.
 
-2. Objectives
+---
 
-The main objectives of this system are:
+# 🚀 Features
 
-To provide a structured platform for reporting lost and found items.
+The system includes the following features:
 
-To allow users to manage and edit their own reports.
+• User registration and login authentication  
+• Report lost items  
+• Report found items  
+• Upload item photos  
+• Search and filter lost/found items  
+• Interactive campus map with location hotspots  
+• View item details  
+• Edit or delete personal reports  
+• Dashboard with item statistics  
+• User profile and password management  
 
-To implement secure user authentication.
+---
 
-To organize items by category and location.
+# 🖥️ System Overview
 
-To visualize item hotspots using campus building maps.
+The Campus Lost & Found System allows students to:
 
-To apply front-end and back-end integration using RESTful APIs.
+1. Create an account and log in
+2. Report a lost or found item
+3. Upload images of the item
+4. Search for items reported by other users
+5. View items on an interactive campus map
+6. Manage their own reports through a personal dashboard
 
-3. System Features
-3.1 User Authentication
+This system helps connect students who lost items with those who found them.
 
-User registration
+---
 
-User login and logout
+# 🧱 Tech Stack
 
-Session-based authentication
+## Frontend
+• HTML5  
+• CSS3  
+• JavaScript  
 
-Protected routes for logged-in users
+## Backend
+• Node.js  
+• Express.js  
 
-Only authenticated users can submit, edit, or delete reports.
+## Database
+• MySQL  
 
-3.2 Dashboard
+## Media Storage
+• Cloudinary (for image uploads)
 
-The dashboard displays:
+## Other Tools
+• Express Session (authentication)
+• REST API architecture
 
-Total reports
+---
 
-Total lost items
+# 📂 Project Structure
 
-Total found items
+```
+project-root/
+│
+├── index.html
+├── login.html
+├── register.html
+├── home.html
+├── lost.html
+├── found.html
+├── report.html
+├── maps.html
+├── details.html
+├── myreports.html
+├── settings.html
+│
+├── style.css
+├── script.js
+│
+├── server.js
+├── db.js
+├── cloudinary.js
+│
+├── routes/
+│   ├── auth.js
+│   └── items.js
+│
+└── uploads/
+```
 
-Active items
+---
 
-Recent reports
+# 🔐 Authentication
 
-This provides users with a quick summary of system activity.
+The system uses **session-based authentication**.
 
-3.3 Report Lost / Found Item
+Authentication features include:
 
-Users can:
+• User registration  
+• Login validation  
+• Secure session cookies  
+• Logout functionality  
+• Protected API routes  
 
-Submit a new lost or found report
+---
 
-Upload an image of the item
+# 📦 API Endpoints
 
-Select item category (Lost / Found)
+## Authentication Routes
 
-Select location from dropdown menu
+```
+POST /api/auth/register
+POST /api/auth/login
+POST /api/auth/logout
+GET /api/auth/me
+PUT /api/auth/profile
+PUT /api/auth/change-password
+```
 
-Enter date and contact information
+## Item Routes
 
-Set status (Active / Claimed / Resolved)
+```
+GET /api/items
+GET /api/items/:id
+POST /api/items
+PUT /api/items/:id
+DELETE /api/items/:id
+```
 
-When editing a report, the original data is automatically displayed in the form.
+These APIs allow the frontend to communicate with the backend database.
 
-3.4 Item Details Page
+---
 
-Each item has a dedicated details page that displays:
+# 🗺️ Map Overview Feature
 
-Item title
+The system includes an **interactive campus map** showing item hotspots.
 
-Reference code
+Map features:
 
-Category
+• Pins placed on item locations  
+• Heatmap visualization of lost/found areas  
+• Floor selection (Ground Floor / Level 3 / Level 4)  
+• Tooltip showing item statistics  
+• Quick navigation to filtered items  
 
-Location
+This helps users identify common locations where items are lost.
 
-Date
+---
 
-Description
+# 📊 Dashboard
 
-Contact information
+The dashboard displays system statistics such as:
 
-Image preview
+• Total reports  
+• Lost items  
+• Found items  
+• Active items  
 
-Current status
+These statistics help users quickly understand item activity on campus.
 
-If the logged-in user is the owner of the item, additional actions are available:
+---
 
-Edit report
+# 📷 Image Upload
 
-Change status
+Users can upload item images when creating reports.
 
-Delete report
+Supported formats:
 
-3.5 My Reports
+```
+JPG
+PNG
+WEBP
+```
 
-The "My Reports" page allows users to:
+Maximum file size:
 
-View only the reports they created
+```
+3MB
+```
 
-Edit their reports
+Images are stored using **Cloudinary cloud storage**.
 
-Update item status
+---
 
-Delete reports
+# ⚙️ Installation Guide
 
-This ensures user-specific content management.
+To run the project locally:
 
-3.6 Map Overview
+### 1. Clone the repository
 
-The system includes a Map Overview feature for the TTS Building, which contains:
+```
+git clone https://github.com/yourusername/lost-found-system.git
+```
 
-Ground Floor map
+### 2. Navigate to the project folder
 
-Level 3 map
+```
+cd lost-found-system
+```
 
-Level 4 map
+### 3. Install dependencies
 
-Users can:
+```
+npm install
+```
 
-Switch between floors
+### 4. Configure environment variables
 
-View item count by location
+Create a `.env` file and add:
 
-Click a location to filter items by that area
+```
+SESSION_SECRET=your_secret_key
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+```
 
-This feature helps visualize item hotspots within the campus.
+### 5. Start the server
 
-4. Technologies Used
-Frontend
+```
+node server.js
+```
 
-HTML5
+Server will run on:
 
-CSS3
+```
+http://localhost:3000
+```
 
-Vanilla JavaScript
+---
 
-Backend
+# 👨‍💻 Author
 
-Node.js
+Developed as part of a university web development project.
 
-Express.js
+Student: Ong Jia Jie  
+University: Quest International University (QIU)  
+Course: Web Technology (BCS)
 
-RESTful API design
+---
 
-Database
+# 📜 License
 
-MySQL
-
-Additional Tools
-
-Multer (for image upload handling)
-
-Express-session (for authentication)
-
-JSON-based API responses
-
-5. System Architecture
-
-The system follows a client-server architecture:
-
-The frontend sends requests using Fetch API.
-
-The backend (Express server) processes the request.
-
-The database stores and retrieves item and user data.
-
-JSON responses are returned to the frontend.
-
-The frontend dynamically updates the user interface.
-
-6. Database Design
-
-The database contains two main tables:
-
-Users Table
-
-id
-
-name
-
-email
-
-password (hashed)
-
-created_at
-
-Items Table
-
-id
-
-title
-
-description
-
-category (Lost / Found)
-
-location
-
-date
-
-contact
-
-status
-
-imagePath
-
-ownerUserId
-
-createdAt
-
-This structure ensures proper relationship between users and their submitted items.
-
-7. Security Implementation
-
-The system implements:
-
-Session-based authentication
-
-Route protection middleware
-
-User ownership verification before editing or deleting items
-
-Input validation on both client and server side
-
-8. Challenges Faced
-
-During development, several challenges were encountered:
-
-Handling dynamic image previews
-
-Managing edit mode and create mode within the same form
-
-Fixing incorrect route redirection
-
-Ensuring correct image path loading for building maps
-
-Maintaining consistent layout across multiple pages
-
-These challenges were resolved through debugging, route refactoring, and structural improvements.
-
-9. Future Improvements
-
-The system can be enhanced further by adding:
-
-Admin dashboard
-
-Advanced filtering and search options
-
-Email notifications for matched items
-
-Interactive clickable map hotspots
-
-Pagination for large item datasets
-
-AI-based image matching system
-
-10. Conclusion
-
-The Campus Lost and Found Management System successfully demonstrates the integration of frontend and backend technologies to build a functional web application.
-
-The system fulfills the assignment objectives by:
-
-Implementing user authentication
-
-Managing database-driven content
-
-Handling image uploads
-
-Providing dynamic UI updates
-
-Visualizing location-based data
-
-This project reflects practical understanding of full-stack web development concepts and RESTful architecture.
-
-udpdate github
-git add .
-git commit -m "Updated feature"
-git push
-
-Aizen free Service name mysql-2d48a2d7
+This project is created for **educational purposes only**.
