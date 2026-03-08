@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (emptyState) emptyState.style.display = "none";
 
-    // Click to view (no edit): open a view page OR report.html in view mode
+    // Click to view 
     grid.querySelectorAll(".item-card").forEach((card) => {
       card.addEventListener("click", () => {
         const id = card.getAttribute("data-id");

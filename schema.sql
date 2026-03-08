@@ -59,14 +59,3 @@ CREATE TABLE IF NOT EXISTS items (
 CREATE INDEX idx_items_category ON items(category);
 CREATE INDEX idx_items_status ON items(status);
 CREATE INDEX idx_items_created_at ON items(created_at);
-
--- =========================
--- CONTACT MESSAGES (Optional)
--- =========================
-CREATE TABLE IF NOT EXISTS contact_messages (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(80) NOT NULL,
-  email VARCHAR(190) NOT NULL,
-  message VARCHAR(1000) NOT NULL,
-  created_at BIGINT NOT NULL
-) ENGINE=InnoDB;

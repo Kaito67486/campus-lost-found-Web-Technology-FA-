@@ -29,8 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const statusEl = document.getElementById("status");
     const confirmEl = document.getElementById("confirm");
 
-    const photoEl = document.getElementById("photo"); // ✅ file input
-    const previewEl = document.getElementById("photoPreview"); // ✅ optional img preview
+    const photoEl = document.getElementById("photo"); // file input
+    const previewEl = document.getElementById("photoPreview"); //  optional img preview
 
     const formTitle = document.getElementById("formTitle");
     const modeHint = document.getElementById("modeHint");

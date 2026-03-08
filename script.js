@@ -367,7 +367,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Page fade-in
 document.addEventListener("DOMContentLoaded", () => {
-  // Add "page" class in HTML for this to work (see step 3 below)
   document.body.classList.add("page-ready");
 
   // Footer year

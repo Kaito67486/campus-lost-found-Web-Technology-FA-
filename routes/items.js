@@ -12,7 +12,7 @@ const express = require("express");
 const multer = require("multer");
 const { query, transaction } = require("../db");
 const requireLogin = require("../middleware/requireLogin");
-const cloudinary = require("../cloudinary"); // ✅ NEW
+const cloudinary = require("../cloudinary"); 
 
 const router = express.Router();
 
@@ -53,7 +53,7 @@ function toApiItem(row) {
 }
 
 // ---------- multer (photo upload) ----------
-// ✅ Use memory storage (Cloudinary upload)
+// Use memory storage (Cloudinary upload)
 const storage = multer.memoryStorage();
 
 function fileFilter(req, file, cb) {
@@ -81,7 +81,7 @@ async function uploadToCloudinary(file) {
     resource_type: "image",
   });
 
-  return result.secure_url; // ✅ permanent URL
+  return result.secure_url; // permanent URL
 }
 
 // ---------- reference code generator ----------
@@ -216,7 +216,7 @@ router.post("/", requireLogin, upload.single("photo"), async (req, res) => {
     const referenceCode = await nextRefCode(category);
     const now = Date.now();
 
-    // ✅ Cloudinary upload (optional)
+    //  Cloudinary upload (optional)
     let imagePath = null;
     if (req.file) {
       imagePath = await uploadToCloudinary(req.file);
@@ -266,7 +266,7 @@ router.put("/:id", requireLogin, requireOwner, upload.single("photo"), async (re
 
     const now = Date.now();
 
-    // ✅ keep old imagePath unless new photo uploaded
+    //  keep old imagePath unless new photo uploaded
     let imagePath = existing.image_path || null;
     if (req.file) {
       imagePath = await uploadToCloudinary(req.file);
