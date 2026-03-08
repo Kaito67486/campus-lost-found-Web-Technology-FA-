@@ -46,7 +46,6 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/items", itemRoutes);
-app.use("/api/contact", contactRoutes);
 
 // =========================
 // HEALTH CHECK
