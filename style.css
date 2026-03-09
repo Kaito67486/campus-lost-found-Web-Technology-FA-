@@ -3055,112 +3055,253 @@ body{
 }
 
 /* =========================
-   FLOATING ANIMATION BACKGROUND
+   AURORA PAGE MODE
 ========================= */
 
-.floating-bg{
-  position:fixed;
-  inset:0;
-  overflow:hidden;
-  pointer-events:none;
-  z-index:0;
+body.aurora{
+  position: relative;
+  overflow-x: hidden;
+
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity var(--speedSlow, 420ms) var(--ease, cubic-bezier(.2,.8,.2,1)),
+    transform var(--speedSlow, 420ms) var(--ease, cubic-bezier(.2,.8,.2,1));
+
+  background:
+    linear-gradient(180deg, #eef4ff 0%, #f1f5f9 55%, #ffffff 100%);
 }
 
-/* Keep page above background */
+body.aurora.page-ready{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================
+   AURORA BACKGROUND LAYER
+========================= */
+
+.aurora-bg{
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+
+  background:
+    radial-gradient(circle at 18% 20%, rgba(96,165,250,.12), transparent 30%),
+    radial-gradient(circle at 82% 18%, rgba(148,163,184,.12), transparent 32%),
+    radial-gradient(circle at 50% 80%, rgba(191,219,254,.10), transparent 34%);
+}
+
+/* keep content above background */
 .topbar,
 .auth,
 .footer{
-  position:relative;
-  z-index:2;
+  position: relative;
+  z-index: 2;
 }
 
-/* Blob base style */
+/* =========================
+   AURORA LIGHTS
+========================= */
 
-.blob{
-  position:absolute;
-  border-radius:42% 58% 63% 37% / 41% 44% 56% 59%;
-  filter:blur(60px);
-  opacity:.35;
-  will-change:transform,border-radius;
+.aurora-light{
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(58px);
+  opacity: .46;
+  mix-blend-mode: screen;
+  will-change: transform, background;
 }
 
-/* Blob positions */
-
-.blob1{
-  width:320px;
-  height:320px;
-  background:rgba(37,99,235,0.45);
-  top:8%;
-  left:8%;
+/* left light */
+.aurora-1{
+  width: 48vw;
+  height: 48vw;
+  min-width: 420px;
+  min-height: 420px;
+  left: -10vw;
+  top: 10vh;
+  background:
+    radial-gradient(circle at 35% 35%,
+      rgba(96,165,250,.46) 0%,
+      rgba(59,130,246,.28) 32%,
+      rgba(96,165,250,0) 72%);
   animation:
-    drift1 18s ease-in-out infinite,
-    morph 10s ease-in-out infinite;
+    auroraFloat1 17s ease-in-out infinite alternate,
+    auroraHue1 14s ease-in-out infinite alternate;
 }
 
-.blob2{
-  width:280px;
-  height:280px;
-  background:rgba(59,130,246,0.35);
-  top:60%;
-  left:15%;
+/* right light */
+.aurora-2{
+  width: 52vw;
+  height: 52vw;
+  min-width: 470px;
+  min-height: 470px;
+  right: -12vw;
+  top: 6vh;
+  background:
+    radial-gradient(circle at 60% 40%,
+      rgba(148,163,184,.34) 0%,
+      rgba(191,219,254,.26) 34%,
+      rgba(148,163,184,0) 74%);
   animation:
-    drift2 20s ease-in-out infinite,
-    morph 12s ease-in-out infinite reverse;
+    auroraFloat2 21s ease-in-out infinite alternate,
+    auroraHue2 16s ease-in-out infinite alternate;
 }
 
-.blob3{
-  width:360px;
-  height:360px;
-  background:rgba(147,197,253,0.35);
-  top:18%;
-  right:10%;
+/* bottom light */
+.aurora-3{
+  width: 46vw;
+  height: 46vw;
+  min-width: 390px;
+  min-height: 390px;
+  left: 20vw;
+  bottom: -18vh;
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(125,211,252,.28) 0%,
+      rgba(226,232,240,.20) 38%,
+      rgba(125,211,252,0) 74%);
   animation:
-    drift3 22s ease-in-out infinite,
-    morph 14s ease-in-out infinite;
+    auroraFloat3 19s ease-in-out infinite alternate,
+    auroraHue3 18s ease-in-out infinite alternate;
 }
 
-/* Floating movement */
+/* =========================
+   MOTION
+========================= */
 
-@keyframes drift1{
-  0%{ transform:translate(0,0) scale(1); }
-  25%{ transform:translate(40px,-35px) scale(1.05); }
-  50%{ transform:translate(60px,10px) scale(.95); }
-  75%{ transform:translate(20px,40px) scale(1.04); }
-  100%{ transform:translate(0,0) scale(1); }
-}
-
-@keyframes drift2{
-  0%{ transform:translate(0,0) scale(1); }
-  25%{ transform:translate(-30px,-30px) scale(1.05); }
-  50%{ transform:translate(35px,-10px) scale(.95); }
-  75%{ transform:translate(10px,35px) scale(1.04); }
-  100%{ transform:translate(0,0) scale(1); }
-}
-
-@keyframes drift3{
-  0%{ transform:translate(0,0) scale(1); }
-  25%{ transform:translate(-35px,18px) scale(1.04); }
-  50%{ transform:translate(-10px,-32px) scale(.97); }
-  75%{ transform:translate(28px,16px) scale(1.05); }
-  100%{ transform:translate(0,0) scale(1); }
-}
-
-/* Blob morph animation */
-
-@keyframes morph{
+@keyframes auroraFloat1{
   0%{
-    border-radius:42% 58% 63% 37% / 41% 44% 56% 59%;
-  }
-  25%{
-    border-radius:58% 42% 40% 60% / 52% 31% 69% 48%;
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
   }
   50%{
-    border-radius:35% 65% 55% 45% / 44% 60% 40% 56%;
-  }
-  75%{
-    border-radius:60% 40% 34% 66% / 38% 55% 45% 62%;
+    transform: translate3d(8vw, -3vh, 0) scale(1.08) rotate(8deg);
   }
   100%{
-    border-radius:42% 58% 63% 37% / 41% 44% 56% 59%;
+    transform: translate3d(4vw, 6vh, 0) scale(.98) rotate(-6deg);
+  }
+}
+
+@keyframes auroraFloat2{
+  0%{
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+  50%{
+    transform: translate3d(-10vw, 5vh, 0) scale(1.06) rotate(-10deg);
+  }
+  100%{
+    transform: translate3d(-4vw, -4vh, 0) scale(.99) rotate(6deg);
+  }
+}
+
+@keyframes auroraFloat3{
+  0%{
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+  50%{
+    transform: translate3d(6vw, -6vh, 0) scale(1.05) rotate(7deg);
+  }
+  100%{
+    transform: translate3d(-3vw, -2vh, 0) scale(.97) rotate(-5deg);
+  }
+}
+
+/* =========================
+   SLOW COLOR SHIFT
+========================= */
+
+@keyframes auroraHue1{
+  0%{
+    background:
+      radial-gradient(circle at 35% 35%,
+        rgba(96,165,250,.46) 0%,
+        rgba(59,130,246,.28) 32%,
+        rgba(96,165,250,0) 72%);
+  }
+  50%{
+    background:
+      radial-gradient(circle at 35% 35%,
+        rgba(147,197,253,.44) 0%,
+        rgba(148,163,184,.24) 32%,
+        rgba(147,197,253,0) 72%);
+  }
+  100%{
+    background:
+      radial-gradient(circle at 35% 35%,
+        rgba(125,211,252,.42) 0%,
+        rgba(96,165,250,.24) 32%,
+        rgba(125,211,252,0) 72%);
+  }
+}
+
+@keyframes auroraHue2{
+  0%{
+    background:
+      radial-gradient(circle at 60% 40%,
+        rgba(148,163,184,.34) 0%,
+        rgba(191,219,254,.26) 34%,
+        rgba(148,163,184,0) 74%);
+  }
+  50%{
+    background:
+      radial-gradient(circle at 60% 40%,
+        rgba(191,219,254,.34) 0%,
+        rgba(226,232,240,.24) 34%,
+        rgba(191,219,254,0) 74%);
+  }
+  100%{
+    background:
+      radial-gradient(circle at 60% 40%,
+        rgba(96,165,250,.28) 0%,
+        rgba(148,163,184,.22) 34%,
+        rgba(96,165,250,0) 74%);
+  }
+}
+
+@keyframes auroraHue3{
+  0%{
+    background:
+      radial-gradient(circle at 50% 50%,
+        rgba(125,211,252,.28) 0%,
+        rgba(226,232,240,.20) 38%,
+        rgba(125,211,252,0) 74%);
+  }
+  50%{
+    background:
+      radial-gradient(circle at 50% 50%,
+        rgba(191,219,254,.26) 0%,
+        rgba(148,163,184,.18) 38%,
+        rgba(191,219,254,0) 74%);
+  }
+  100%{
+    background:
+      radial-gradient(circle at 50% 50%,
+        rgba(96,165,250,.24) 0%,
+        rgba(226,232,240,.18) 38%,
+        rgba(96,165,250,0) 74%);
+  }
+}
+
+/* =========================
+   CARD POLISH
+========================= */
+
+.auth-card{
+  background: rgba(255,255,255,.90);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(230,235,242,.96);
+}
+
+/* =========================
+   MOBILE TUNING
+========================= */
+
+@media (max-width: 700px){
+  .aurora-light{
+    filter: blur(42px);
+    opacity: .36;
   }
 }
