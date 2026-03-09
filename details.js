@@ -159,11 +159,11 @@ function renderItem(item) {
     if (item.imagePath) {
       photoEl.src = item.imagePath;
     } else {
-      photoEl.src = "https://via.placeholder.com/600x400?text=No+Image";
+      photoEl.src = "/images/placeholder.png";
     }
 
     photoEl.onerror = () => {
-      photoEl.src = "https://via.placeholder.com/600x400?text=No+Image";
+      photoEl.src = "/images/placeholder.png";
     };
   }
 
