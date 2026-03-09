@@ -41,6 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (dateEl) dateEl.max = today;
 
     // Photo preview (create + edit mode)
+    const placeholderEl = document.getElementById("imagePlaceholder");
+
     if (photoEl && previewEl) {
       photoEl.addEventListener("change", () => {
         const file = photoEl.files?.[0];
@@ -48,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!file) {
           previewEl.src = "";
           previewEl.style.display = "none";
+          if (placeholderEl) placeholderEl.style.display = "block";
           return;
         }
 
@@ -56,11 +59,13 @@ document.addEventListener("DOMContentLoaded", () => {
           photoEl.value = "";
           previewEl.src = "";
           previewEl.style.display = "none";
+          if (placeholderEl) placeholderEl.style.display = "block";
           return;
         }
 
         previewEl.src = URL.createObjectURL(file);
         previewEl.style.display = "block";
+        if (placeholderEl) placeholderEl.style.display = "none";
       });
     }
     // Mode UI
@@ -187,6 +192,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (previewEl && item.imagePath) {
           previewEl.src = item.imagePath;
           previewEl.style.display = "block";
+
+          const placeholderEl = document.getElementById("imagePlaceholder");
+          if (placeholderEl) placeholderEl.style.display = "none";
         }
       } catch (err) {
         toast("Failed to load item for editing.", "error");

@@ -205,27 +205,25 @@
           </div>
 
           <div class="panel-body">
+            <div class="image-upload-card">
+              <div class="image-preview-box" id="imagePreviewBox">
+                <img id="photoPreview" class="image-preview" alt="Preview" />
 
-            <div class="upload-dropzone" id="uploadDropzone">
-              <input id="photo" name="photo" type="file" accept="image/*" hidden>
-
-              <label for="photo" class="upload-area">
-                <div class="upload-icon">📷</div>
-
-                <div class="upload-text">
-                  <strong>Drop your image here, or browse</strong>
-                  <span>Supports JPG, JPEG, PNG</span>
+                <div class="image-placeholder" id="imagePlaceholder">
+                  <div class="upload-cloud">☁️</div>
+                  <div class="upload-placeholder-title">Upload Image</div>
+                  <div class="upload-placeholder-subtitle">Image size must be less than 2MB</div>
                 </div>
-              </label>
+              </div>
+
+              <input id="photo" name="photo" type="file" accept="image/*" hidden />
+
+              <label for="photo" class="select-image-btn">Select Image</label>
             </div>
 
-            <img id="photoPreview" alt="Preview"
-                style="display:none;max-width:280px;margin-top:12px;border-radius:12px;" />
-
-            <p class="muted" style="margin-top:10px;">
+            <p class="muted upload-tip">
               Tip: Upload a clear photo to increase the chance of matching.
             </p>
-
           </div>
         </section>
 
