@@ -30,18 +30,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // ---------------------------------------------
   const PIN_CONFIG = {
     gf: [
-      { location: "TTS Ground Floor (GF)", label: "GF", top: 18, left: 20 },
+      { location: "Restroom (GF)", label: "GF", top: 18, left: 20 },
       { location: "La Place Cafe", label: "Cafe", top: 57, left: 43 },
       { location: "Discussion Area", label: "Discuss", top: 60, left: 71 },
       { location: "ATM", label: "ATM", top: 83, left: 79 }
     ],
     l3: [
-      { location: "TTS Level 3 (L3)", label: "L3", top: 18, left: 20 },
-      { location: "TTS Level 3", label: "L3", top: 55, left: 55 }
+      { location: "Library", label: "L3", top: 18, left: 20 },
+      { location: "Lecture Room 7 (LR7)", label: "L3", top: 55, left: 55 }
     ],
     l4: [
-      { location: "TTS Level 4 (L4)", label: "L4", top: 18, left: 20 },
-      { location: "TTS Level 4", label: "L4", top: 55, left: 55 }
+      { location: "Pharmaceutical Room", label: "L4", top: 18, left: 20 },
+      { location: "Seminar Room 6 (SR6)", label: "L4", top: 55, left: 55 }
     ],
   };
 
