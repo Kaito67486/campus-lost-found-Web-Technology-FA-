@@ -3353,13 +3353,22 @@ body.aurora{
   }
 
   .image-preview-box {
-    min-height: 220px;
-    border-radius: 18px;
+    width:100%;
+    height:180px;
+    background:#f3f4f6;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    margin-bottom:12px;
   }
 
   .image-preview {
-    height: 220px;
-    border-radius: 16px;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
   }
 
   .upload-cloud {
