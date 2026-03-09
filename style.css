@@ -3381,3 +3381,8 @@ body.aurora{
     border-radius:12px;
   }
 }
+
+#ownerActions{
+  display:flex;
+  gap:10px;
+}
