@@ -579,6 +579,42 @@ body {
   margin-bottom: 6px;
 }
 
+.upload-dropzone{
+  border:2px dashed #cbd5e1;
+  border-radius:20px;
+  padding:50px 20px;
+  text-align:center;
+  background:#f8fafc;
+  transition:0.2s;
+}
+
+.upload-dropzone:hover{
+  border-color:#2563eb;
+  background:#eff6ff;
+}
+
+.upload-area{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
+}
+
+.upload-icon{
+  font-size:40px;
+}
+
+.upload-text strong{
+  font-size:18px;
+  color:#1e293b;
+}
+
+.upload-text span{
+  font-size:14px;
+  color:#64748b;
+}
+
 /* ===== Clean login form ===== */
 .form {
   display: flex;

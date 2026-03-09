@@ -205,14 +205,27 @@
           </div>
 
           <div class="panel-body">
-            <input id="photo" name="photo" type="file" accept="image/*" />
+
+            <div class="upload-dropzone" id="uploadDropzone">
+              <input id="photo" name="photo" type="file" accept="image/*" hidden>
+
+              <label for="photo" class="upload-area">
+                <div class="upload-icon">📷</div>
+
+                <div class="upload-text">
+                  <strong>Drop your image here, or browse</strong>
+                  <span>Supports JPG, JPEG, PNG</span>
+                </div>
+              </label>
+            </div>
 
             <img id="photoPreview" alt="Preview"
-                 style="display:none;max-width:280px;margin-top:12px;border-radius:12px;" />
+                style="display:none;max-width:280px;margin-top:12px;border-radius:12px;" />
 
             <p class="muted" style="margin-top:10px;">
               Tip: Upload a clear photo to increase the chance of matching.
             </p>
+
           </div>
         </section>
 
