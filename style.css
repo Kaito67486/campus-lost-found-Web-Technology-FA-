@@ -3055,29 +3055,6 @@ body{
 }
 
 /* =========================
-   AURORA PAGE MODE
-========================= */
-
-body.aurora{
-  position: relative;
-  overflow-x: hidden;
-
-  opacity: 0;
-  transform: translateY(6px);
-  transition:
-    opacity var(--speedSlow, 420ms) var(--ease, cubic-bezier(.2,.8,.2,1)),
-    transform var(--speedSlow, 420ms) var(--ease, cubic-bezier(.2,.8,.2,1));
-
-  background:
-    linear-gradient(180deg, #eef4ff 0%, #f1f5f9 55%, #ffffff 100%);
-}
-
-body.aurora.page-ready{
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* =========================
    AURORA BACKGROUND LAYER
 ========================= */
 
@@ -3087,11 +3064,10 @@ body.aurora.page-ready{
   overflow: hidden;
   pointer-events: none;
   z-index: 1;
-
   background:
-    radial-gradient(circle at 18% 20%, rgba(96,165,250,.12), transparent 30%),
-    radial-gradient(circle at 82% 18%, rgba(148,163,184,.12), transparent 32%),
-    radial-gradient(circle at 50% 80%, rgba(191,219,254,.10), transparent 34%);
+    radial-gradient(circle at 18% 20%, rgba(96,165,250,.18), transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(148,163,184,.16), transparent 36%),
+    radial-gradient(circle at 50% 80%, rgba(191,219,254,.14), transparent 38%);
 }
 
 /* keep content above background */
@@ -3109,68 +3085,65 @@ body.aurora.page-ready{
 .aurora-light{
   position: absolute;
   border-radius: 999px;
-  filter: blur(58px);
-  opacity: .46;
+  filter: blur(38px);
+  opacity: .72;
   mix-blend-mode: screen;
-  will-change: transform, background;
+  will-change: transform, opacity;
 }
 
 /* left light */
 .aurora-1{
-  width: 48vw;
-  height: 48vw;
-  min-width: 420px;
-  min-height: 420px;
-  left: -10vw;
-  top: 10vh;
+  width: 62vw;
+  height: 62vw;
+  min-width: 560px;
+  min-height: 560px;
+  left: -14vw;
+  top: 6vh;
   background:
     radial-gradient(circle at 35% 35%,
-      rgba(96,165,250,.46) 0%,
-      rgba(59,130,246,.28) 32%,
-      rgba(96,165,250,0) 72%);
-  animation:
-    auroraFloat1 17s ease-in-out infinite alternate,
-    auroraHue1 14s ease-in-out infinite alternate;
+      rgba(96,165,250,.72) 0%,
+      rgba(59,130,246,.48) 28%,
+      rgba(96,165,250,.18) 48%,
+      rgba(96,165,250,0) 74%);
+  animation: auroraFloat1 26s ease-in-out infinite alternate;
 }
 
 /* right light */
 .aurora-2{
-  width: 52vw;
-  height: 52vw;
-  min-width: 470px;
-  min-height: 470px;
-  right: -12vw;
-  top: 6vh;
+  width: 64vw;
+  height: 64vw;
+  min-width: 600px;
+  min-height: 600px;
+  right: -16vw;
+  top: 2vh;
   background:
     radial-gradient(circle at 60% 40%,
-      rgba(148,163,184,.34) 0%,
-      rgba(191,219,254,.26) 34%,
-      rgba(148,163,184,0) 74%);
-  animation:
-    auroraFloat2 21s ease-in-out infinite alternate,
-    auroraHue2 16s ease-in-out infinite alternate;
+      rgba(148,163,184,.56) 0%,
+      rgba(191,219,254,.42) 30%,
+      rgba(147,197,253,.16) 50%,
+      rgba(148,163,184,0) 76%);
+  animation: auroraFloat2 30s ease-in-out infinite alternate;
 }
 
-/* bottom light */
+/* bottom center light */
 .aurora-3{
-  width: 46vw;
-  height: 46vw;
-  min-width: 390px;
-  min-height: 390px;
-  left: 20vw;
-  bottom: -18vh;
+  width: 58vw;
+  height: 58vw;
+  min-width: 520px;
+  min-height: 520px;
+  left: 18vw;
+  bottom: -22vh;
   background:
     radial-gradient(circle at 50% 50%,
-      rgba(125,211,252,.28) 0%,
-      rgba(226,232,240,.20) 38%,
-      rgba(125,211,252,0) 74%);
-  animation:
-    auroraFloat3 19s ease-in-out infinite alternate,
-    auroraHue3 18s ease-in-out infinite alternate;
+      rgba(125,211,252,.52) 0%,
+      rgba(226,232,240,.30) 32%,
+      rgba(96,165,250,.14) 50%,
+      rgba(125,211,252,0) 76%);
+  animation: auroraFloat3 28s ease-in-out infinite alternate;
 }
 
 /* =========================
-   MOTION
+   SLOWER + SMOOTHER MOTION
 ========================= */
 
 @keyframes auroraFloat1{
@@ -3178,10 +3151,10 @@ body.aurora.page-ready{
     transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
   }
   50%{
-    transform: translate3d(8vw, -3vh, 0) scale(1.08) rotate(8deg);
+    transform: translate3d(7vw, -2vh, 0) scale(1.08) rotate(5deg);
   }
   100%{
-    transform: translate3d(4vw, 6vh, 0) scale(.98) rotate(-6deg);
+    transform: translate3d(3vw, 5vh, 0) scale(1.02) rotate(-4deg);
   }
 }
 
@@ -3190,10 +3163,10 @@ body.aurora.page-ready{
     transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
   }
   50%{
-    transform: translate3d(-10vw, 5vh, 0) scale(1.06) rotate(-10deg);
+    transform: translate3d(-8vw, 4vh, 0) scale(1.07) rotate(-6deg);
   }
   100%{
-    transform: translate3d(-4vw, -4vh, 0) scale(.99) rotate(6deg);
+    transform: translate3d(-3vw, -3vh, 0) scale(1.01) rotate(4deg);
   }
 }
 
@@ -3202,106 +3175,47 @@ body.aurora.page-ready{
     transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
   }
   50%{
-    transform: translate3d(6vw, -6vh, 0) scale(1.05) rotate(7deg);
+    transform: translate3d(5vw, -5vh, 0) scale(1.06) rotate(4deg);
   }
   100%{
-    transform: translate3d(-3vw, -2vh, 0) scale(.97) rotate(-5deg);
+    transform: translate3d(-2vw, -1vh, 0) scale(1.01) rotate(-3deg);
   }
 }
 
 /* =========================
-   SLOW COLOR SHIFT
+   PAGE BACKGROUND
 ========================= */
 
-@keyframes auroraHue1{
-  0%{
-    background:
-      radial-gradient(circle at 35% 35%,
-        rgba(96,165,250,.46) 0%,
-        rgba(59,130,246,.28) 32%,
-        rgba(96,165,250,0) 72%);
-  }
-  50%{
-    background:
-      radial-gradient(circle at 35% 35%,
-        rgba(147,197,253,.44) 0%,
-        rgba(148,163,184,.24) 32%,
-        rgba(147,197,253,0) 72%);
-  }
-  100%{
-    background:
-      radial-gradient(circle at 35% 35%,
-        rgba(125,211,252,.42) 0%,
-        rgba(96,165,250,.24) 32%,
-        rgba(125,211,252,0) 72%);
-  }
+body.aurora{
+  position: relative;
+  overflow-x: hidden;
+
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity var(--speedSlow, 420ms) var(--ease, cubic-bezier(.2,.8,.2,1)),
+    transform var(--speedSlow, 420ms) var(--ease, cubic-bezier(.2,.8,.2,1));
+
+  background:
+    linear-gradient(180deg, #eaf2ff 0%, #eef2f7 52%, #f8fafc 100%);
 }
 
-@keyframes auroraHue2{
-  0%{
-    background:
-      radial-gradient(circle at 60% 40%,
-        rgba(148,163,184,.34) 0%,
-        rgba(191,219,254,.26) 34%,
-        rgba(148,163,184,0) 74%);
-  }
-  50%{
-    background:
-      radial-gradient(circle at 60% 40%,
-        rgba(191,219,254,.34) 0%,
-        rgba(226,232,240,.24) 34%,
-        rgba(191,219,254,0) 74%);
-  }
-  100%{
-    background:
-      radial-gradient(circle at 60% 40%,
-        rgba(96,165,250,.28) 0%,
-        rgba(148,163,184,.22) 34%,
-        rgba(96,165,250,0) 74%);
-  }
+body.aurora.page-ready{
+  opacity: 1;
+  transform: translateY(0);
 }
 
-@keyframes auroraHue3{
-  0%{
-    background:
-      radial-gradient(circle at 50% 50%,
-        rgba(125,211,252,.28) 0%,
-        rgba(226,232,240,.20) 38%,
-        rgba(125,211,252,0) 74%);
-  }
-  50%{
-    background:
-      radial-gradient(circle at 50% 50%,
-        rgba(191,219,254,.26) 0%,
-        rgba(148,163,184,.18) 38%,
-        rgba(191,219,254,0) 74%);
-  }
-  100%{
-    background:
-      radial-gradient(circle at 50% 50%,
-        rgba(96,165,250,.24) 0%,
-        rgba(226,232,240,.18) 38%,
-        rgba(96,165,250,0) 74%);
-  }
-}
-
-/* =========================
-   CARD POLISH
-========================= */
-
+/* optional polish */
 .auth-card{
-  background: rgba(255,255,255,.90);
-  backdrop-filter: blur(8px);
+  background: rgba(255,255,255,.88);
+  backdrop-filter: blur(10px);
   border: 1px solid rgba(230,235,242,.96);
+  box-shadow: 0 14px 40px rgba(15,23,42,.08);
 }
-
-/* =========================
-   MOBILE TUNING
-========================= */
 
 @media (max-width: 700px){
   .aurora-light{
-    filter: blur(42px);
-    opacity: .36;
+    filter: blur(30px);
+    opacity: .62;
   }
 }
